@@ -1,218 +1,231 @@
 import { getSelectedBottleSkinSrc } from "../utils/selectedSkin.js";
 
-// Cache for skin images
-const skinImageCache = {};
-const skinImageCallbacks = {};
-const processedSkinCache = {};
+// Cache for skin assets
+const skinAssetCache = {};
+const skinAssetCallbacks = {};
 
-function removeSkinBackground(img) {
-    const canvasOriginal = document.createElement('canvas');
-    const w = 512;
-    const h = 512;
-    canvasOriginal.width = w;
-    canvasOriginal.height = h;
-    const ctxOrig = canvasOriginal.getContext('2d');
-    ctxOrig.drawImage(img, 0, 0, w, h);
-    
-    const imgDataOrig = ctxOrig.getImageData(0, 0, w, h);
-    const dataOrig = imgDataOrig.data;
-    
-    // Sample border colors
-    const bgColors = [];
-    function addBgColor(r, g, b) {
-        for (const c of bgColors) {
-            const dist = Math.sqrt((r - c[0]) ** 2 + (g - c[1]) ** 2 + (b - c[2]) ** 2);
-            if (dist < 30) return;
-        }
-        bgColors.push([r, g, b]);
+function cleanSkinBackgroundPreserveColor(img) {
+  const canvas = document.createElement("canvas");
+  const w = 512;
+  const h = 512;
+  canvas.width = w;
+  canvas.height = h;
+
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  ctx.drawImage(img, 0, 0, w, h);
+
+  const imgData = ctx.getImageData(0, 0, w, h);
+  const data = imgData.data;
+
+  function getColorAt(x, y) {
+    const i = (y * w + x) * 4;
+    return [data[i], data[i + 1], data[i + 2], data[i + 3]];
+  }
+
+  function dist(a, b) {
+    return Math.sqrt(
+      (a[0] - b[0]) ** 2 +
+      (a[1] - b[1]) ** 2 +
+      (a[2] - b[2]) ** 2
+    );
+  }
+
+  const samples = [];
+  const step = 16;
+
+  for (let x = 0; x < w; x += step) {
+    samples.push(getColorAt(x, 0));
+    samples.push(getColorAt(x, h - 1));
+  }
+
+  for (let y = 0; y < h; y += step) {
+    samples.push(getColorAt(0, y));
+    samples.push(getColorAt(w - 1, y));
+  }
+
+  const visited = new Uint8Array(w * h);
+  const queue = [];
+
+  function enqueue(x, y) {
+    if (x < 0 || y < 0 || x >= w || y >= h) return;
+    const idx = y * w + x;
+    if (visited[idx]) return;
+    visited[idx] = 1;
+    queue.push(idx);
+  }
+
+  for (let x = 0; x < w; x++) {
+    enqueue(x, 0);
+    enqueue(x, h - 1);
+  }
+
+  for (let y = 0; y < h; y++) {
+    enqueue(0, y);
+    enqueue(w - 1, y);
+  }
+
+  let head = 0;
+  while (head < queue.length) {
+    const idx = queue[head++];
+    const x = idx % w;
+    const y = Math.floor(idx / w);
+    const offset = idx * 4;
+
+    const color = [
+      data[offset],
+      data[offset + 1],
+      data[offset + 2],
+      data[offset + 3]
+    ];
+
+    let isBackground = false;
+
+    if (color[3] < 20) {
+      isBackground = true;
     }
-    
-    const margin = 5;
-    for (let y = 0; y < h; y++) {
-        for (let x = 0; x < w; x++) {
-            if (x < margin || x >= w - margin || y < margin || y >= h - margin) {
-                const idx = (y * w + x) * 4;
-                addBgColor(dataOrig[idx], dataOrig[idx + 1], dataOrig[idx + 2]);
-            }
-        }
+
+    for (const sample of samples) {
+      if (dist(color, sample) < 75) {
+        isBackground = true;
+        break;
+      }
     }
-    
-    const visited = new Uint8Array(w * h);
-    const queue = [];
-    for (let y = 0; y < h; y++) {
-        for (let x = 0; x < w; x++) {
-            if (x < margin || x >= w - margin || y < margin || y >= h - margin) {
-                const idx = y * w + x;
-                visited[idx] = 1;
-                queue.push(idx);
-            }
-        }
+
+    // remove white/gray edge backgrounds only if connected to outside
+    if (
+      color[0] > 185 &&
+      color[1] > 185 &&
+      color[2] > 185
+    ) {
+      isBackground = true;
     }
-    
-    function colorDistance(c1, c2) {
-        return Math.sqrt((c1[0] - c2[0]) ** 2 + (c1[1] - c2[1]) ** 2 + (c1[2] - c2[2]) ** 2);
+
+    if (isBackground) {
+      data[offset + 3] = 0;
+
+      enqueue(x + 1, y);
+      enqueue(x - 1, y);
+      enqueue(x, y + 1);
+      enqueue(x, y - 1);
     }
-    
-    const threshold = 65;
-    let head = 0;
-    while (head < queue.length) {
-        const idx = queue[head++];
-        const x = idx % w;
-        const y = Math.floor(idx / w);
+  }
+
+  // light edge cleanup
+  for (let pass = 0; pass < 2; pass++) {
+    const alpha = new Uint8Array(w * h);
+    for (let i = 0; i < w * h; i++) {
+      alpha[i] = data[i * 4 + 3];
+    }
+
+    for (let y = 1; y < h - 1; y++) {
+      for (let x = 1; x < w - 1; x++) {
+        const idx = y * w + x;
         const offset = idx * 4;
-        
-        const r = dataOrig[offset];
-        const g = dataOrig[offset + 1];
-        const b = dataOrig[offset + 2];
-        const a = dataOrig[offset + 3];
-        
-        if (a === 0) continue;
-        
-        let isBg = false;
-        for (const c of bgColors) {
-            if (colorDistance([r, g, b], c) < threshold) {
-                isBg = true;
-                break;
+
+        if (alpha[idx] > 0) {
+          const hasTransparentNeighbor =
+            alpha[idx - 1] === 0 ||
+            alpha[idx + 1] === 0 ||
+            alpha[idx - w] === 0 ||
+            alpha[idx + w] === 0;
+
+          if (hasTransparentNeighbor) {
+            const r = data[offset];
+            const g = data[offset + 1];
+            const b = data[offset + 2];
+
+            if (r > 210 && g > 210 && b > 210) {
+              data[offset + 3] = 0;
             }
+          }
         }
-        
-        if (!isBg) {
-            const isWhiteOrGray = (r > 190 && g > 190 && b > 190);
-            if (isWhiteOrGray) {
-                const distToGray = Math.abs(r - 204) + Math.abs(g - 204) + Math.abs(b - 204);
-                const distToWhite = Math.abs(r - 255) + Math.abs(g - 255) + Math.abs(b - 255);
-                if (distToGray < 45 || distToWhite < 45) {
-                    isBg = true;
-                }
-            }
-        }
-        
-        if (isBg) {
-            dataOrig[offset + 3] = 0;
-            if (x > 0 && !visited[idx - 1]) { visited[idx - 1] = 1; queue.push(idx - 1); }
-            if (x < w - 1 && !visited[idx + 1]) { visited[idx + 1] = 1; queue.push(idx + 1); }
-            if (y > 0 && !visited[idx - w]) { visited[idx - w] = 1; queue.push(idx - w); }
-            if (y < h - 1 && !visited[idx + w]) { visited[idx + w] = 1; queue.push(idx + w); }
-        }
+      }
     }
-    
-    // Defringe original canvas
-    for (let pass = 0; pass < 4; pass++) {
-        const tempAlpha = new Uint8Array(w * h);
-        for (let i = 0; i < w * h; i++) {
-            tempAlpha[i] = dataOrig[i * 4 + 3];
-        }
-        for (let y = 1; y < h - 1; y++) {
-            for (let x = 1; x < w - 1; x++) {
-                const idx = y * w + x;
-                if (tempAlpha[idx] > 0) {
-                    const hasTransNeighbor = 
-                        tempAlpha[idx - 1] === 0 || 
-                        tempAlpha[idx + 1] === 0 || 
-                        tempAlpha[idx - w] === 0 || 
-                        tempAlpha[idx + w] === 0 ||
-                        tempAlpha[idx - 1 - w] === 0 ||
-                        tempAlpha[idx + 1 - w] === 0 ||
-                        tempAlpha[idx - 1 + w] === 0 ||
-                        tempAlpha[idx + 1 + w] === 0;
-                    
-                    if (hasTransNeighbor) {
-                        const offset = idx * 4;
-                        const r = dataOrig[offset];
-                        const g = dataOrig[offset + 1];
-                        const b = dataOrig[offset + 2];
-                        
-                        let matchedBg = false;
-                        for (const c of bgColors) {
-                            if (Math.abs(r - c[0]) + Math.abs(g - c[1]) + Math.abs(b - c[2]) < 120) {
-                                matchedBg = true;
-                                break;
-                            }
-                        }
-                        if (matchedBg) {
-                            dataOrig[offset + 3] = 0;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    ctxOrig.putImageData(imgDataOrig, 0, 0);
-    
-    // Create grayscale version
-    const canvasGrayscale = document.createElement('canvas');
-    canvasGrayscale.width = w;
-    canvasGrayscale.height = h;
-    const ctxGray = canvasGrayscale.getContext('2d');
-    ctxGray.drawImage(canvasOriginal, 0, 0);
-    
-    const imgDataGray = ctxGray.getImageData(0, 0, w, h);
-    const dataGray = imgDataGray.data;
-    
-    for (let i = 0; i < dataGray.length; i += 4) {
-        if (dataGray[i + 3] === 0) continue;
-        const r = dataGray[i];
-        const g = dataGray[i + 1];
-        const b = dataGray[i + 2];
-        
-        let v = 0.299 * r + 0.587 * g + 0.114 * b;
-        v = v * 1.25;
-        v = (v - 128) * 1.15 + 128;
-        v = Math.max(0, Math.min(255, v));
-        
-        dataGray[i] = v;
-        dataGray[i + 1] = v;
-        dataGray[i + 2] = v;
-    }
-    
-    ctxGray.putImageData(imgDataGray, 0, 0);
-    
-    return {
-        original: canvasOriginal,
-        grayscale: canvasGrayscale
-    };
+  }
+
+  ctx.putImageData(imgData, 0, 0);
+  return canvas;
 }
 
-function getSkinImageElement(src, callback) {
-    if (processedSkinCache[src]) {
-        callback(processedSkinCache[src]);
-        return processedSkinCache[src];
-    }
-    
-    if (skinImageCache[src]) {
-        const img = skinImageCache[src];
-        if (img.complete) {
-            if (!processedSkinCache[src]) {
-                processedSkinCache[src] = removeSkinBackground(img);
-            }
-            callback(processedSkinCache[src]);
-        } else {
-            if (!skinImageCallbacks[src]) {
-                skinImageCallbacks[src] = [];
-            }
-            skinImageCallbacks[src].push(callback);
-        }
-        return img;
-    }
-    
-    const img = new Image();
-    skinImageCache[src] = img;
-    skinImageCallbacks[src] = [callback];
-    
-    img.onload = () => {
-        const processedCanvas = removeSkinBackground(img);
-        processedSkinCache[src] = processedCanvas;
-        if (skinImageCallbacks[src]) {
-            skinImageCallbacks[src].forEach(cb => cb(processedCanvas));
-            delete skinImageCallbacks[src];
-        }
+function createGameplayMaskFromCleanedCanvas(cleanedCanvas) {
+  const canvas = document.createElement("canvas");
+  canvas.width = cleanedCanvas.width;
+  canvas.height = cleanedCanvas.height;
+
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  ctx.drawImage(cleanedCanvas, 0, 0);
+
+  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const data = imgData.data;
+
+  for (let i = 0; i < data.length; i += 4) {
+    if (data[i + 3] === 0) continue;
+
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+
+    let v = 0.299 * r + 0.587 * g + 0.114 * b;
+    v = v * 1.2;
+    v = Math.max(0, Math.min(255, v));
+
+    data[i] = v;
+    data[i + 1] = v;
+    data[i + 2] = v;
+  }
+
+  ctx.putImageData(imgData, 0, 0);
+  return canvas;
+}
+
+function getSkinAsset(src, callback) {
+  if (skinAssetCache[src]) {
+    callback(skinAssetCache[src]);
+    return;
+  }
+
+  if (skinAssetCallbacks[src]) {
+    skinAssetCallbacks[src].push(callback);
+    return;
+  }
+
+  skinAssetCallbacks[src] = [callback];
+
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+
+  img.onload = () => {
+    const cleanedOriginalCanvas = cleanSkinBackgroundPreserveColor(img);
+    const gameplayMaskCanvas = createGameplayMaskFromCleanedCanvas(cleanedOriginalCanvas);
+
+    const asset = {
+      original: cleanedOriginalCanvas,
+      gameplayMask: gameplayMaskCanvas
     };
-    img.onerror = () => {
-        img.src = '/skins/skin1.png';
+
+    skinAssetCache[src] = asset;
+
+    skinAssetCallbacks[src].forEach(cb => cb(asset));
+    delete skinAssetCallbacks[src];
+  };
+
+  img.onerror = () => {
+    console.warn("Skin failed to load:", src);
+
+    img.onerror = null;
+
+    const asset = {
+      original: null,
+      gameplayMask: null
     };
-    img.src = src;
-    return img;
+
+    skinAssetCache[src] = asset;
+
+    skinAssetCallbacks[src].forEach(cb => cb(asset));
+    delete skinAssetCallbacks[src];
+  };
+
+  img.src = src;
 }
 
 const COLOR_HEX_MAP = {
@@ -519,12 +532,14 @@ export function BottleImage({ color, hidden, isSelected = false, className = '' 
     if (bottleSrc === 'classic' || bottleSrc === 'skin-classic' || !bottleSrc) {
         renderBottleToCanvas(canvas, null, colorHex, hidden);
     } else {
-        const cachedProcessed = processedSkinCache[bottleSrc];
-        if (cachedProcessed) {
-            renderBottleToCanvas(canvas, cachedProcessed, colorHex, hidden);
+        const cachedAsset = skinAssetCache[bottleSrc];
+        if (cachedAsset && cachedAsset.gameplayMask) {
+            renderBottleToCanvas(canvas, cachedAsset.gameplayMask, colorHex, hidden);
         } else {
-            getSkinImageElement(bottleSrc, (img) => {
-                renderBottleToCanvas(canvas, img, colorHex, hidden);
+            getSkinAsset(bottleSrc, (asset) => {
+                if (asset && asset.gameplayMask) {
+                    renderBottleToCanvas(canvas, asset.gameplayMask, colorHex, hidden);
+                }
             });
         }
     }
@@ -551,12 +566,14 @@ export function BottleImage({ color, hidden, isSelected = false, className = '' 
             if (bottleSrc === 'classic' || bottleSrc === 'skin-classic' || !bottleSrc) {
                 renderBottleToCanvas(canvas, null, newColorHex, hidden);
             } else {
-                const currentCached = processedSkinCache[bottleSrc];
-                if (currentCached) {
-                    renderBottleToCanvas(canvas, currentCached, newColorHex, hidden);
+                const cachedAsset = skinAssetCache[bottleSrc];
+                if (cachedAsset && cachedAsset.gameplayMask) {
+                    renderBottleToCanvas(canvas, cachedAsset.gameplayMask, newColorHex, hidden);
                 } else {
-                    getSkinImageElement(bottleSrc, (img) => {
-                        renderBottleToCanvas(canvas, img, newColorHex, hidden);
+                    getSkinAsset(bottleSrc, (asset) => {
+                        if (asset && asset.gameplayMask) {
+                            renderBottleToCanvas(canvas, asset.gameplayMask, newColorHex, hidden);
+                        }
                     });
                 }
             }
