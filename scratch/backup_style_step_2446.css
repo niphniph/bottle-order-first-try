@@ -1,0 +1,39 @@
+Created At: 2026-05-23T14:34:54Z
+Completed At: 2026-05-23T14:34:54Z
+File Path: `file:///c:/Users/user/Desktop/bottle%20order%20first%20try/style.css`
+Total Lines: 766
+Total Bytes: 20078
+Showing lines 425 to 455
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+     border-radius: 2px;
+     z-index: 4;
+ }
+ */
+ 
+ /* Interactive elements for bottom row */
+ #bottom-row .bottle {
+     cursor: pointer;
+     transition: transform 0.2s;
+ }
+ #bottom-row .bottle:hover {
+     transform: translateY(-5px);
+ }
+ #bottom-row .bottle.selected {
+     transform: translateY(-15px) !important;
+     animation: none !important;
+     border: none !important;
+     border-color: transparent !important;
+     box-shadow: none !important;
+     mask: none !important;
+     -webkit-mask: none !important;
+     filter: drop-shadow(0 0 8px #ffff00) drop-shadow(0 0 3px #ffff00) !important;
+ }
+ 
+ .liquid {
+     width: 100%;
+     height: 80%; /* Fill level */
+     border-radius: 0 0 4px 4px;
+     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.4), inset 0 -5px 10px rgba(0, 0, 0, 0.2);
+ }
+ 
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

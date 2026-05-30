@@ -1,0 +1,39 @@
+Created At: 2026-05-22T18:46:58Z
+Completed At: 2026-05-22T18:46:58Z
+File Path: `file:///c:/Users/user/Desktop/bottle%20order%20first%20try/style.css`
+Total Lines: 651
+Total Bytes: 15720
+Showing lines 410 to 440
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+ }
+ 
+ /* --- BOTTLE SKINS --- */
+ /* --- Image Skins --- */
+ .bottle.skin-image {
+     width: 40px !important;
+     height: 80px !important;
+     background-color: transparent !important;
+     border: none !important;
+     box-shadow: none !important;
+ }
+ .bottle.skin-image::before,
+ .bottle.skin-image::after {
+     display: none !important;
+ }
+ .bottle.skin-image .skin-img {
+     position: absolute;
+     width: 100%;
+     height: 100%;
+     top: 0;
+     left: 0;
+     object-fit: contain;
+     z-index: 1;
+     pointer-events: none;
+ }
+ .bottle.skin-image .liquid {
+     position: absolute;
+     width: 30px;
+     height: 30px;
+     border-radius: 50%;
+     bottom: 20px;
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

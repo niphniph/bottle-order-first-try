@@ -1,0 +1,35 @@
+Created At: 2026-05-22T14:20:09Z
+Completed At: 2026-05-22T14:20:09Z
+File Path: `file:///C:/Users/user/.gemini/antigravity/brain/70648967-02e5-4eca-b4a4-cbdc882b59b6/.system_generated/tasks/task-850.log`
+Total Lines: 27
+Total Bytes: 1952
+Showing lines 1 to 27
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+ 
+ dist\src\components\BottleImage.js:3:export function BottleImage({ color, hidden, isSelected = false, className = '' 
+ }) {
+ dist\src\components\BottleImage.js:17:    skinImg.className = 'skin-img bottle-skin bottle-image';
+ dist\src\components\BottleImage.jsx:1:export function BottleImage({ color, hidden, isSelected = false, className = '' 
+ }) {
+ dist\src\components\BottleImage.jsx:8:            console.error("Error parsing selectedBottleSkin in BottleImage:", e);
+ dist\src\components\BottleImage.jsx:22:    skinImg.className = 'bottle-skin bottle-image';
+ dist\src\components\BottleSkin.jsx:32:      className={`bottle-skin ${className}`}
+ dist\index.html:1811:// Global reusable BottleImage function definition
+ dist\index.html:1812:function BottleImage({ color, hidden, isSelected = false, className = '' }) {
+ dist\index.html:1826:    skinImg.className = 'skin-img bottle-skin bottle-image';
+ dist\index.html:1882:import('./src/components/BottleImage.js').then(module => {
+ dist\index.html:1883:    console.log("BottleImage component module loaded dynamically.");
+ dist\index.html:1885:    console.warn("Failed to load BottleImage component module dynamically:", err);
+ dist\index.html:2792:    if (typeof BottleImage === 'function') {
+ dist\index.html:2793:        const bottleSlot = BottleImage({
+ dist\index.html:2820:    skinImg.className = 'skin-img bottle-skin bottle-image';
+ dist\script.js:164:// Global reusable BottleImage function definition
+ dist\script.js:165:function BottleImage({ color, hidden, isSelected = false, className = '' }) {
+ dist\script.js:179:    skinImg.className = 'skin-img bottle-skin bottle-image';
+ dist\script.js:1138:    if (typeof BottleImage === 'function') {
+ dist\script.js:1139:        const bottleSlot = BottleImage({
+ dist\script.js:1166:    skinImg.className = 'skin-img bottle-skin bottle-image';
+ dist\style.css:584:.bottle-skin,
+ dist\style.css:595:.bottle-skin.bottle-image.hidden-bottle {
+ 
+The above content shows the entire, complete file contents of the requested file.

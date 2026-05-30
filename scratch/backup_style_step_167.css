@@ -1,0 +1,142 @@
+Created At: 2026-05-22T13:17:10Z
+Completed At: 2026-05-22T13:17:10Z
+File Path: `file:///c:/Users/user/Desktop/bottle%20order%20first%20try/style.css`
+Total Lines: 646
+Total Bytes: 15501
+Showing lines 1 to 646
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+ :root {
+     --bg-purple: #6a1b9a; /* Approximate from image */
+     --bg-dot: rgba(255, 255, 255, 0.05);
+     --shelf-top: #ffb74d;
+     --shelf-front: #ef6c00;
+     --outline-color: #1a0033; /* Dark purple/black for outlines */
+     
+     --c-red: #FF0040;
+     --c-green: #00FF2A;
+     --c-yellow: #FFEA00;
+     --c-blue: #0088FF;
+     --c-orange: #FF6A00;
+     --c-purple: #AA00FF;
+     --c-cyan: #00E5FF;
+     --c-magenta: #FF00AA;
+     --c-lime: #A6FF00;
+     --c-pink: #FF4D85;
+     --c-teal: #00F0B5;
+     --c-lavender: #D16BFF;
+     --c-brown: #FFB300; /* Amber */
+     --c-beige: #6BFFB3; /* Mint */
+     --c-maroon: #D90022; /* Crimson */
+ }
+ 
+ * {
+     box-sizing: border-box;
+     margin: 0;
+     padding: 0;
+     font-family: 'Fredoka One', cursive, sans-serif;
+ }
+ 
+ html, body {
+     min-height: 100%;
+ }
+ 
+ body {
+     background-color: #111;
+     display: flex;
+     flex-direction: column;
+     justify-content: flex-start;
+     align-items: center;
+     min-height: 100vh;
+     overflow-y: auto;
+     position: relative;
+ }
+ 
+ /* Screen Management */
+ .screen {
+     display: none;
+     flex-direction: column;
+     align-items: center;
+     width: 100%;
+     max-width: 600px;
+     min-height: 100vh;
+     padding-left: 1.5rem;
+     padding-right: 1.5rem;
+     padding-top: 6rem;
+     padding-bottom: 10rem;
+     z-index: 1;
+     box-sizing: border-box;
+ }
+ 
+ .screen.active {
+     display: f
+<truncated 15061 bytes>
+;
+ }
+ 
+ .bottle-slot.selected {
+     transform: translateY(-15px) !important;
+     filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.6)) !important;
+ }
+ 
+ .bottle-skin.bottle-image {
+     position: absolute;
+     width: 100%;
+     height: 100%;
+     top: 0;
+     left: 0;
+     object-fit: contain;
+     z-index: 1;
+     pointer-events: none;
+ }
+ 
+ .bottle-skin.bottle-image.hidden-bottle {
+     filter: brightness(0) opacity(0.35) drop-shadow(0 0 5px #00f0ff);
+ }
+ 
+ .bottle-liquid {
+     position: absolute;
+     width: 30px;
+     height: 30px;
+     border-radius: 50%;
+     bottom: 20px;
+     left: 50%;
+     transform: translateX(-50%);
+     z-index: 2;
+     opacity: 0.95;
+     box-shadow: 0 0 15px currentColor, inset 0 0 10px #fff;
+     pointer-events: none;
+ }
+ 
+ /* Live preview containers */
+ .skin-preview img {
+     max-width: 100%;
+     max-height: 100%;
+     object-fit: contain;
+ }
+ 
+ /* Custom glow borders for cards */
+ .neon-border-primary {
+     border: 2px solid var(--c-cyan) !important;
+     box-shadow: 0 0 10px var(--c-cyan) !important;
+ }
+ .neon-border-secondary {
+     border: 2px solid var(--c-lime) !important;
+     box-shadow: 0 0 10px var(--c-lime) !important;
+ }
+ .neon-border-hotpink {
+     border: 2px solid var(--c-pink) !important;
+     box-shadow: 0 0 10px var(--c-pink) !important;
+ }
+ .neon-border-tertiary {
+     border: 2px solid var(--c-lavender) !important;
+     box-shadow: 0 0 10px var(--c-lavender) !important;
+ }
+ .neon-glow-active {
+     animation: activeGlow 1.5s infinite alternate;
+ }
+ @keyframes activeGlow {
+     from { filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
+     to { filter: drop-shadow(0 0 15px rgba(255,255,255,0.6)); }
+ }
+ 
+The above content shows the entire, complete file contents of the requested file.

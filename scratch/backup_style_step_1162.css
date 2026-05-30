@@ -1,0 +1,71 @@
+Created At: 2026-05-22T18:41:34Z
+Completed At: 2026-05-22T18:41:34Z
+File Path: `file:///c:/Users/user/.gemini/antigravity/brain/70648967-02e5-4eca-b4a4-cbdc882b59b6/implementation_plan.md`
+Total Lines: 63
+Total Bytes: 3168
+Showing lines 1 to 63
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+ # Implementation Plan - Connect Selected Skins to Gameplay
+ 
+ This plan details the steps to fully connect selected skins to the actual gameplay bottles across all modes and completely disable the old classic/default bottle styling.
+ 
+ ## User Review Required
+ 
+ > [!IMPORTANT]
+ > - The old classic bottle shape (CSS borders, background color, neck/shine pseudo-elements `::before` and `::after`) will be commented out/disabled in both `index.html` and `style.css`.
+ > - All skin-related layout and override CSS rules (e.g. `.bottle-slot`, `.bottle-skin`, `.bottle-liquid`, etc.) will be added directly to the inline `<style>` tag of `index.html` since `style.css` is not linked.
+ > - The `BottleSkin.jsx` component will be updated with the exact behavior and console log requested.
+ > - The syntax error in `script.js` (broken duplicate `getMigratedSkin`) will be resolved.
+ 
+ ## Open Questions
+ 
+ None. The task instructions are clear and specify exactly how the component and helper should behave.
+ 
+ ## Proposed Changes
+ 
+ ---
+ 
+ ### Global Helper & Reusable Component
+ 
+ #### [MODIFY] [BottleSkin.jsx](file:///c:/Users/user/Desktop/bottle%20order%20first%20try/src/components/BottleSkin.jsx)
+ - Ensure the component matches the exact behavior requested, including the console log:
+   `console.log("GAME IS USING SELECTED SKIN:", skinSrc);`
+ 
+ ---
+ 
+ ### Core Gameplay Styles & Logic
+ 
+ #### [MODIFY] [index.html](file:///c:/Users/user/Desktop/bottle%20order%20first%20try/index.html)
+ - Comment out or remove visual styling properties of the default `.bottle` class, `.bottle::before`, and `.bottle::after` in the inline `<style>` tag.
+ - Import/add the skin layout and override CSS styles (like `.bottle-slot`, `.bottle-skin`, `.bottle-liquid`, etc.) from `style.css` into the `<style>` tag.
+ - Ensure that `createBottleDOM` uses `BottleImage` wrapper (which maps to the active skin image and adds the proper classes).
+ 
+ #### [MODIFY] [style.css](file:///c:/Users/user/Desktop/bottle%20order%20first%20try/style.css)
+ - Also comment out/disable the default `.bottle` visual styling properties and pseudo-elements here to prevent any leakage.
+ 
+ #### [MODIFY] [script.js](file:///c:/Users/user/Desktop/bottle%20order%20first%20try/script.js)
+ - Fix the duplicate/broken function syntax at the top of the script.
+ - Update `createBottleDOM` and `BottleImage` functions to match the layout and logic of `index.html`.
+ 
+ ---
+ 
+ ### Build & Run
+ 
+ #### [RUN] Build Command
+ - Execute `bun run build` to copy all modified files into the `dist/` directory.
+ 
+ ## Verification Plan
+ 
+ ### Automated/Console Verification
+ - Open the browser console and verify that gameplay prints:
+   `GAME IS USING SELECTED SKIN: [path]`
+ - Check `localStorage` for keys `selectedBottleSkinSrc` and `selectedBottleSkin`.
+ 
+ ### Manual Verification
+ - Select `skin13` from the shop.
+ - Open Classic Mode, Adventure Mode, Sequence Mode, and Blind Mode.
+ - Verify that the active skin (`skin13.png`) is visible in all modes instead of the old classic bottle shape.
+ - Verify that in Blind Mode, target bottles are hidden while player/answer bottles are visible with the selected skin.
+ - Refresh the page and verify that the selected skin persists.
+ 
+The above content shows the entire, complete file contents of the requested file.

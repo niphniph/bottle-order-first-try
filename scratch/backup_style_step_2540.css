@@ -1,0 +1,30 @@
+Created At: 2026-05-23T14:45:11Z
+Completed At: 2026-05-23T14:45:11Z
+File Path: `file:///c:/Users/user/Desktop/bottle%20order%20first%20try/style.css`
+Total Lines: 766
+Total Bytes: 20078
+Showing lines 745 to 766
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+ }
+ .neon-border-hotpink {
+     border: 2px solid var(--c-pink) !important;
+     box-shadow: 0 0 10px var(--c-pink) !important;
+ }
+ .neon-border-tertiary {
+     border: 2px solid var(--c-lavender) !important;
+     box-shadow: 0 0 10px var(--c-lavender) !important;
+ }
+ .neon-glow-active {
+     animation: activeGlow 1.5s infinite alternate;
+ }
+ @keyframes activeGlow {
+     from { filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
+     to { filter: drop-shadow(0 0 15px rgba(255,255,255,0.6)); }
+ }
+ 
+ #live-preview-img {
+     filter: drop-shadow(0 0 15px var(--preview-glow, rgba(236, 178, 255, 0.5)));
+ }
+ 
+ 
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

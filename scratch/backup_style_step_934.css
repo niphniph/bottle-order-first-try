@@ -1,0 +1,17 @@
+Created At: 2026-05-22T14:31:00Z
+Completed At: 2026-05-22T14:31:00Z
+File Path: `file:///C:/Users/user/.gemini/antigravity/brain/70648967-02e5-4eca-b4a4-cbdc882b59b6/task.md`
+Total Lines: 9
+Total Bytes: 622
+Showing lines 1 to 9
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+ # Tasks - Connect Selected Skins to Gameplay
+ 
+ - [x] Modify `src/components/BottleSkin.jsx` with the exact requested React component code and console log.
+ - [x] Modify `<style>` tag in `index.html` to comment out default bottle styles (borders, backgrounds, pseudo-elements) and add the skin layout styles.
+ - [x] Modify `style.css` to comment out default bottle styles.
+ - [x] Fix syntax errors in `script.js` (broken duplicate `getMigratedSkin`) and align functions.
+ - [x] Run `bun run build` command to compile and copy files into `dist/`.
+ - [x] Verify functionality (logs, immediate rendering, page refresh persistence).
+ 
+The above content shows the entire, complete file contents of the requested file.

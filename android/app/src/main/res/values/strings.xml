@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Bottle Order Game</string>
+    <string name="title_activity_main">Bottle Order Game</string>
+    <string name="package_name">com.bottleorder.game</string>
+    <string name="custom_url_scheme">com.bottleorder.game</string>
+</resources>

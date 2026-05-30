@@ -1,0 +1,39 @@
+Created At: 2026-05-23T14:35:36Z
+Completed At: 2026-05-23T14:35:36Z
+File Path: `file:///c:/Users/user/Desktop/bottle%20order%20first%20try/style.css`
+Total Lines: 766
+Total Bytes: 20078
+Showing lines 360 to 390
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+ 
+ /* Shelves */
+ .shelf-container {
+     width: 90%;
+     position: relative;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+ }
+ 
+ .shelf-wood {
+     width: 100%;
+     height: 20px;
+     background-color: var(--shelf-top);
+     border: 4px solid var(--outline-color);
+     border-radius: 10px;
+     box-shadow: 0 5px 0 var(--shelf-front), 0 10px 10px rgba(0,0,0,0.4);
+     position: relative;
+     z-index: 1;
+ }
+ 
+ /* Bottles Row */
+ .bottles-row {
+     display: flex;
+     gap: 8px;
+     margin-bottom: -5px; /* Sink into shelf slightly */
+     z-index: 2;
+ }
+ 
+ /* Bottle Styling */
+ .bottle {
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

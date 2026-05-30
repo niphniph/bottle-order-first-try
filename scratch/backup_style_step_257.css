@@ -1,0 +1,19 @@
+Created At: 2026-05-22T13:19:42Z
+Completed At: 2026-05-22T13:19:42Z
+File Path: `file:///C:/Users/user/.gemini/antigravity/brain/70648967-02e5-4eca-b4a4-cbdc882b59b6/task.md`
+Total Lines: 11
+Total Bytes: 421
+Showing lines 1 to 11
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+ # Tasks - Bottle Skin Integration
+ 
+ - [x] Create `public/skins` directory and move skin images
+ - [x] Create central skin registry `src/data/skins.js`
+ - [x] Create reusable component `src/components/BottleSkin.jsx`
+ - [x] Update `style.css` with new CSS rules
+ - [x] Update `build.js` copy utility
+ - [ ] Update `index.html` inline script and layout
+ - [ ] Update `script.js` backup script
+ - [ ] Run build and verify execution
+ 
+The above content shows the entire, complete file contents of the requested file.

@@ -1,0 +1,68 @@
+Created At: 2026-05-23T08:07:13Z
+Completed At: 2026-05-23T08:07:14Z
+File Path: `file:///C:/Users/user/.gemini/antigravity/brain/70648967-02e5-4eca-b4a4-cbdc882b59b6/implementation_plan.md`
+Total Lines: 60
+Total Bytes: 3601
+Showing lines 1 to 60
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+ # Implementation Plan - Fix Selected Skin Apply and Sizing Issues
+ 
+ This plan details the styling and code changes needed to ensure that selected bottle skins are rendered at full size without classic/default overlays, borders, or pseudo-elements in any game mode.
+ 
+ ## User Review Required
+ 
+ > [!IMPORTANT]
+ > - All gameplay containers (`.bottle-slot`, `.bottle`, `.bottle.skin-image`) will be constrained to the recommended dimensions: `width: 70px !important; height: 95px !important;`.
+ > - All default/classic bottle shapes, borders, backgrounds, and pseudo-elements (`::before`/`::after` representing neck and shine) will be completely disabled (`display: none !important; content: none !important;`).
+ > - Sizing overrides (like the legacy `40px` x `80px` or `64px` x `90px` dimensions) will be removed.
+ > - The updates will be applied to both the inline `<style>` section of [index.html](file:///c:/Users/user/Desktop/bottle%20order%20first%20try/index.html) and [style.css](file:///c:/Users/user/Desktop/bottle%20order%20first%20try/style.css).
+ 
+ ## Open Questions
+ 
+ None. The layout dimensions and CSS classes are fully specified by the user.
+ 
+ ## Proposed Changes
+ 
+ ---
+ 
+ ### Stylesheet Overrides
+ 
+ #### [MODIFY] [index.html](file:///c:/Users/user/Desktop/bottle%20order%20first%20try/index.html)
+ - Update the inline `<style>` section:
+   - Override `.bottle-slot` and `.bottle-slot.bottle` to `width: 70px !important; height: 95px !important;`.
+   - Override `.bottle.
+<truncated 306 bytes>
+udo-elements (`.bottle-slot::before`, `.bottle-slot::after`, `.bottle::before`, `.bottle::after`, `.bottle-slot.bottle::before`, `.bottle-slot.bottle::after`).
+   - Disable any `overflow: hidden;` constraints that could clip the skin.
+ 
+ #### [MODIFY] [style.css](file:///c:/Users/user/Desktop/bottle%20order%20first%20try/style.css)
+ - Apply the same style adjustments as in `index.html` to keep the root stylesheet fully aligned and synchronized.
+ 
+ ---
+ 
+ ### Component & Game Script Verification
+ 
+ #### [MODIFY] [script.js](file:///c:/Users/user/Desktop/bottle%20order%20first%20try/script.js)
+ - Ensure the `BottleImage` helper function in `script.js` wraps the visual in `<img src={selectedSkinSrc} className="bottle-skin" />` using `bottle-skin` class and matches `index.html`'s implementation.
+ 
+ #### [MODIFY] [BottleImage.js](file:///c:/Users/user/Desktop/bottle%20order%20first%20try/src/components/BottleImage.js) and [BottleImage.jsx](file:///c:/Users/user/Desktop/bottle%20order%20first%20try/src/components/BottleImage.jsx)
+ - Ensure component classes and properties are aligned to return elements using the `bottle-skin` class with correct containment styling.
+ 
+ ---
+ 
+ ### Build & Run
+ 
+ #### [RUN] Build Command
+ - Execute `bun run build` to package changes to the `dist` directory.
+ 
+ ## Verification Plan
+ 
+ ### Automated/Console Verification
+ - Verify the active skin path in the browser console: `GAME IS USING SELECTED SKIN: [path]`
+ 
+ ### Manual Layout Inspection
+ - Check the width and height of the rendering slot using the browser inspector (confirming it is exactly `70px` by `95px` and `overflow` is not clipping).
+ - Confirm that no white outlines, borders, bottle necks, or glossy shine overlays appear on top of the skin image.
+ - Test in Classic Mode, Sequence Mode, and Blind/Memory Mode to ensure all render the skin at full size.
+ 
+The above content shows the entire, complete file contents of the requested file.

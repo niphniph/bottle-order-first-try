@@ -1,0 +1,34 @@
+Created At: 2026-05-22T18:49:19Z
+Completed At: 2026-05-22T18:49:19Z
+File Path: `file:///c:/Users/user/Desktop/bottle%20order%20first%20try/style.css`
+Total Lines: 659
+Total Bytes: 15927
+Showing lines 465 to 490
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+ }
+ .bottle.skin-classic.hidden-bottle::after {
+     opacity: 0.15 !important;
+ }
+ .mystery-mark {
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     font-family: monospace;
+     font-size: 1.8rem;
+     font-weight: bold;
+     color: #00f0ff;
+     text-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff;
+     z-index: 10;
+     pointer-events: none;
+     animation: pulseGlow 1.5s infinite ease-in-out;
+ }
+ @keyframes pulseGlow {
+     0%, 100% { opacity: 0.5; text-shadow: 0 0 8px #00f0ff; }
+     50% { opacity: 1; text-shadow: 0 0 15px #00f0ff, 0 0 25px #00f0ff; }
+ }
+ 
+ 
+ /* Buttons */
+ .controls-container {
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

@@ -1,0 +1,101 @@
+Created At: 2026-05-25T15:26:10Z
+Completed At: 2026-05-25T15:26:10Z
+The following changes were made by the replace_file_content tool to: c:\Users\user\Desktop\bottle order first try\script.js. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -1801,125 +1801,7 @@
+ }
+ 
+ function initDragAndDrop(container) {
+-    if (!container) return;
+-    
+-    const slots = container.children;
+-    
+-    function getLocalCenter(slot, parent) {
+-        let left = 0;
+-        let top = 0;
+-        let current = slot;
+-        while (current && current !== parent) {
+-            left += current.offsetLeft;
+-            top += current.offsetTop;
+-            current = current.offsetParent;
+-        }
+-        return {
+-            x: left + slot.offsetWidth / 2,
+-            y: top + slot.offsetHeight / 2
+-        };
+-    }
+-    
+-    // Expose arrow methods globally so click swap can also use them
+-    window.updateSwapArrows = function(fromIndex, toIndex) {
+-        let overlay = document.getElementById('swap-arrows-overlay');
+-        if (!overlay) {
+-            const shelfContainer = container.closest('.shelf-container');
+-            if (!shelfContainer) return;
+-            
+-            overlay = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+-            overlay.id = 'swap-arrows-overlay';
+-            overlay.setAttribute('class', 'swap-arrows-overlay');
+-            
+-            overlay.innerHTML = `
+-                <defs>
+-                    <filter id="neon-glow-yellow" x="-50%" y="-50%" width="200%" height="200%">
+-                        <feGaussianBlur stdDeviation="3" result="blur1"/>
+-                        <feGaussianBlur stdDeviation="8" result="blur2"/>
+-                        <feMerge>
+-                            <feMergeNode in="blur2"/>
+-                            <feMergeNode in="blur1"/>
+-                            <feMergeNode in="SourceGraphic"/>
+-            
+<truncated 2048 bytes>
+    
+-        const margin = 28;
+-        
+-        const startAx = ax + (dx / dist) * margin;
+-        const startAy = ay - 12;
+-        const endBx = bx - (dx / dist) * (margin + 6);
+-        const endBy = by - 12;
+-        
+-        const startBx = bx - (dx / dist) * margin;
+-        const startBy = by + 12;
+-        const endAx = ax + (dx / dist) * (margin + 6);
+-        const endAy = ay + 12;
+-        
+-        const midX = (ax + bx) / 2;
+-        const midY = (ay + by) / 2;
+-        
+-        const offsetAmt = Math.min(35, dist * 0.15) + 5;
+-        
+-        const pathForward = overlay.querySelector('#arrow-path-forward');
+-        const pathBackward = overlay.querySelector('#arrow-path-backward');
+-        
+-        if (pathForward && pathBackward) {
+-            pathForward.setAttribute('d', `M ${startAx} ${startAy} Q ${midX} ${midY - offsetAmt} ${endBx} ${endBy}`);
+-            pathBackward.setAttribute('d', `M ${startBx} ${startBy} Q ${midX} ${midY + offsetAmt} ${endAx} ${endAy}`);
+-            
+-            overlay.style.display = 'block';
+-            overlay.style.opacity = '1';
+-        }
+-    };
+-    
+-    window.hideSwapArrows = function() {
+-        const overlay = document.getElementById('swap-arrows-overlay');
+-        if (overlay) {
+-            overlay.style.opacity = '0';
+-            setTimeout(() => {
+-                if (overlay.style.opacity === '0') {
+-                    overlay.style.display = 'none';
+-                }
+-            }, 200);
+-        }
+-    };
+-    
+-    Array.from(slots).forEach((slot) => {
+-        slot.style.touchAction = 'none';
+-    });
++    // Empty static no-op to eliminate all drag listeners
+ }
+ 
+ function renderBottles(containerId, sequence, isInteractive, hideColors) {
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.

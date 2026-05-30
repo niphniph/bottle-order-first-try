@@ -1,0 +1,79 @@
+Created At: 2026-05-22T18:48:33Z
+Completed At: 2026-05-22T18:48:33Z
+File Path: `file:///c:/Users/user/Desktop/bottle%20order%20first%20try/style.css`
+Total Lines: 659
+Total Bytes: 15927
+Showing lines 550 to 620
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+     .neon-title.small { font-size: 2rem; }
+     .screen { padding-left: 1rem; padding-right: 1rem; }
+ }
+ 
+ /* --- Bottle Slot Skin System --- */
+ .bottle-slot {
+     position: relative;
+     width: 70px !important;
+     height: 95px !important;
+     display: flex;
+     align-items: flex-end;
+     justify-content: center;
+     overflow: visible;
+     background: transparent;
+     cursor: pointer;
+     transition: transform 0.2s, filter 0.2s;
+ }
+ 
+ .bottle-slot.bottle {
+     background-color: transparent !important;
+     border: none !important;
+     box-shadow: none !important;
+     overflow: visible !important;
+     width: 70px !important;
+     height: 95px !important;
+ }
+ 
+ .bottle-slot::before,
+ .bottle-slot::after,
+ .bottle-slot.bottle::before,
+ .bottle-slot.bottle::after,
+ .bottle::before,
+ .bottle::after {
+     display: none !important;
+     content: none !important;
+ }
+ 
+ .bottle-slot.selected {
+     transform: translateY(-15px) !important;
+     filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.6)) !important;
+ }
+ 
+ .bottle-skin,
+ .bottle-image {
+     width: 100%;
+     height: 100%;
+     object-fit: contain;
+     object-position: center bottom;
+     display: block;
+     background: transparent;
+     border: none;
+     box-shadow: none !important;
+     z-index: 2;
+ }
+ 
+ .bottle-skin.bottle-image.hidden-bottle {
+     filter: brightness(0) opacity(0.35) drop-shadow(0 0 5px #00f0ff);
+ }
+ 
+ .bottle-liquid {
+     position: absolute;
+     width: 30px;
+     height: 30px;
+     border-radius: 50%;
+     bottom: 20px;
+     left: 50%;
+     transform: translateX(-50%);
+     z-index: 2;
+     opacity: 0.95;
+     box-shadow: 0 0 15px currentColor, inset 0 0 10px #fff;
+     pointer-events: none;
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

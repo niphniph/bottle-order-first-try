@@ -1,0 +1,50 @@
+Created At: 2026-05-22T13:29:55Z
+Completed At: 2026-05-22T13:29:55Z
+File Path: `file:///C:/Users/user/.gemini/antigravity/brain/70648967-02e5-4eca-b4a4-cbdc882b59b6/walkthrough.md`
+Total Lines: 42
+Total Bytes: 2430
+Showing lines 1 to 42
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+ # Walkthrough - Bottle Skin System Integration
+ 
+ This document summarizes the changes made to connect the 13 new bottle skin image files to the Bottle Order game skin system.
+ 
+ ## Changes Made
+ 
+ ### 1. Centralized Skin Registry
+ - Created `src/data/skins.js` containing metadata (id, name, src path, description, neon border classes) for all 13 skins.
+ - The new skins are mapped to `/skins/skin1.png` through `/skins/skin13.png`.
+ 
+ ### 2. Custom Rendering Component
+ - Created `src/components/BottleSkin.jsx` exporting `BottleSkin()`.
+ - Dynamically creates the DOM nodes representing the custom bottle skin images and liquid levels.
+ - Ensures backward compatibility for gameplay visual-swap animations by applying both `.bottle-liquid` and `.liquid` classes, and handles hidden bottles with the mystery mark.
+ 
+ ### 3. Styled Neon Visuals
+ - Updated `style.css` with layout rules for `.bottle-slot`, `.bottle-skin.bottle-image`, and `.bottle-liquid`.
+ - Added color declarations, custom neon card glow classes (`.neon-border-primary`, `.neon-border-secondary`, etc.), and live preview styling featuring custom property `--preview-glow` (preventing raw inline CSS styles).
+ 
+ ### 4. Application Logic Integration
+ - Modified `index.html` inline script to:
+   - Perform safe localStorage migration of legacy skin keys to `selectedBottleSkin` (defaulting to `skin1`).
+   - Dynamically load the skin registry and `BottleSkin` component on startup.
+   - Dynamically render the shop cards in `#skins-grid` based on the central registry.
+   - Update `createBottleDOM` to leverage the custom component.
+   - Set custom properties (`--preview-glow` on `#live-preview-img`) instead of writing raw inline styles.
+   - Default all stats, resets, and leaderboard configurations to `skin1`/`Shaker`.
+ - Modified `script.js` to mirror all JS logic updates made in `index.html`'s script block, maintaining an in-sync backup.
+ 
+ ### 5. Build Automation
+ - Updated `build.js` to recursively copy both `public/` and `src/` directories into `dist/`.
+ - This ensures the dynamic ES module imports (`import('./src/...')`) function correctly in the production bundle.
+ 
+ ---
+ 
+ ## Verification Results
+ 
+ ### Build Verification
+ - Ran the build script (`node build.js`).
+ - Output confirmed all files were copied successfully, including `index.html`, `style.css`, `script.js`, `public/skins/` (into `dist/skins/`), and `src/` (into `dist/src/`).
+ - Verified files structure in `dist/`.
+ 
+The above content shows the entire, complete file contents of the requested file.

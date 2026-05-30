@@ -1,0 +1,27 @@
+{
+  "name": "bottle-order-first-try",
+  "private": true,
+  "scripts": {
+    "build": "bun run build.js",
+    "cap:sync": "bun run build && bun run cap sync",
+    "android:open": "bun run cap open android",
+    "android:debug": "cd android && ./gradlew assembleDebug",
+    "android:release": "cd android && ./gradlew assembleRelease",
+    "android:aab": "cd android && ./gradlew bundleRelease",
+    "ios:open": "bun run cap open ios",
+    "assets:generate": "npx @capacitor/assets generate"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^8.3.3",
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.3.3",
+    "@capacitor/ios": "^8.3.3",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@capacitor/core": "^8.3.3"
+  }
+}

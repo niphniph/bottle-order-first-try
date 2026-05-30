@@ -1,0 +1,69 @@
+Created At: 2026-05-23T14:17:03Z
+Completed At: 2026-05-23T14:17:03Z
+File Path: `file:///c:/Users/user/Desktop/bottle%20order%20first%20try/style.css`
+Total Lines: 766
+Total Bytes: 20078
+Showing lines 460 to 520
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+     margin: 10px 0 20px 0;
+ }
+ .arrow {
+     color: white;
+     font-size: 1.5rem;
+     font-weight: bold;
+     text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+     width: 35px;
+     text-align: center;
+ }
+ 
+ /* Colors */
+ .color-red { background-color: var(--c-red); color: var(--c-red); }
+ .color-green { background-color: var(--c-green); color: var(--c-green); }
+ .color-yellow { background-color: var(--c-yellow); color: var(--c-yellow); }
+ .color-blue { background-color: var(--c-blue); color: var(--c-blue); }
+ .color-orange { background-color: var(--c-orange); color: var(--c-orange); }
+ .color-purple { background-color: var(--c-purple); color: var(--c-purple); }
+ .color-cyan { background-color: var(--c-cyan); color: var(--c-cyan); }
+ .color-magenta { background-color: var(--c-magenta); color: var(--c-magenta); }
+ .color-lime { background-color: var(--c-lime); color: var(--c-lime); }
+ .color-pink { background-color: var(--c-pink); color: var(--c-pink); }
+ .color-teal { background-color: var(--c-teal); color: var(--c-teal); }
+ .color-lavender { background-color: var(--c-lavender); color: var(--c-lavender); }
+ .color-brown { background-color: var(--c-brown); color: var(--c-brown); }
+ .color-beige { background-color: var(--c-beige); color: var(--c-beige); }
+ .color-maroon { background-color: var(--c-maroon); color: var(--c-maroon); }
+ 
+ .hidden-color { 
+     background-color: #333 !important; 
+     box-shadow: inset 0 0 10px black;
+ }
+ .hidden-color::after {
+     content: '?';
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     color: rgba(255,255,255,0.3);
+     font-size: 1.5rem;
+ }
+ 
+ /* --- BOTTLE SKINS --- */
+ /* --- Image Skins --- */
+ .bottle.skin-image {
+     width: 70px !important;
+     height: 95px !important;
+     background-color: transparent !important;
+     border: none !important;
+     box-shadow: none !important;
+ }
+ .bottle.skin-image::before,
+ .bottle.skin-image::after {
+     display: none !important;
+     content: none !important;
+ }
+ .bottle.skin-image .skin-img {
+     position: absolute;
+     width: 100%;
+     height: 100%;
+     top: 0;
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

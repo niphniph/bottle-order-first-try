@@ -1,0 +1,50 @@
+Created At: 2026-05-22T13:14:51Z
+Completed At: 2026-05-22T13:14:51Z
+File Path: `file:///c:/Users/user/Desktop/bottle%20order%20first%20try/build.js`
+Total Lines: 42
+Total Bytes: 1013
+Showing lines 1 to 42
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+ const fs = require('fs');
+ const path = require('path');
+ 
+ const distDir = path.join(__dirname, 'dist');
+ 
+ // Create dist directory if it doesn't exist
+ if (!fs.existsSync(distDir)) {
+     fs.mkdirSync(distDir);
+ }
+ 
+ // Files to copy
+ const filesToCopy = [
+     'index.html',
+     'style.css',
+     'script.js',
+     'shop.html'
+ ];
+ 
+ // Add all .jpg files from the root
+ const files = fs.readdirSync(__dirname);
+ files.forEach(file => {
+     if (file.endsWith('.jpg') || file.endsWith('.png') || file.endsWith('.svg') || file.endsWith('.webp') || file.endsWith('.mp3') || file.endsWith('.wav')) {
+         filesToCopy.push(file);
+     }
+ });
+ 
+ console.log('Building to dist directory...');
+ 
+ filesToCopy.forEach(file => {
+     const src = path.join(__dirname, file);
+     const dest = path.join(distDir, file);
+     
+     if (fs.existsSync(src)) {
+         fs.copyFileSync(src, dest);
+         console.log(`Copied ${file}`);
+     } else {
+         console.warn(`Warning: File not found - ${file}`);
+     }
+ });
+ 
+ console.log('Build complete!');
+ 
+The above content shows the entire, complete file contents of the requested file.

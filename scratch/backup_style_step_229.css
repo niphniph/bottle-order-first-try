@@ -1,0 +1,35 @@
+Created At: 2026-05-22T13:18:39Z
+Completed At: 2026-05-22T13:18:39Z
+File Path: `file:///c:/Users/user/Desktop/bottle%20order%20first%20try/style.css`
+Total Lines: 646
+Total Bytes: 15501
+Showing lines 620 to 646
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+ }
+ 
+ /* Custom glow borders for cards */
+ .neon-border-primary {
+     border: 2px solid var(--c-cyan) !important;
+     box-shadow: 0 0 10px var(--c-cyan) !important;
+ }
+ .neon-border-secondary {
+     border: 2px solid var(--c-lime) !important;
+     box-shadow: 0 0 10px var(--c-lime) !important;
+ }
+ .neon-border-hotpink {
+     border: 2px solid var(--c-pink) !important;
+     box-shadow: 0 0 10px var(--c-pink) !important;
+ }
+ .neon-border-tertiary {
+     border: 2px solid var(--c-lavender) !important;
+     box-shadow: 0 0 10px var(--c-lavender) !important;
+ }
+ .neon-glow-active {
+     animation: activeGlow 1.5s infinite alternate;
+ }
+ @keyframes activeGlow {
+     from { filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
+     to { filter: drop-shadow(0 0 15px rgba(255,255,255,0.6)); }
+ }
+ 
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

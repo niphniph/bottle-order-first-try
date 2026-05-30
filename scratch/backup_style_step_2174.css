@@ -1,0 +1,30 @@
+Created At: 2026-05-23T13:30:16Z
+Completed At: 2026-05-23T13:30:16Z
+File Path: `file:///c:/Users/user/Desktop/bottle%20order%20first%20try/style.css`
+Total Lines: 670
+Total Bytes: 17487
+Showing lines 564 to 585
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+ .bottle-slot {
+     position: relative;
+     width: 70px !important;
+     height: 95px !important;
+     display: flex;
+     align-items: flex-end;
+     justify-content: center;
+     overflow: visible;
+     background: transparent;
+     cursor: pointer;
+     transition: transform 0.2s, filter 0.2s;
+     -webkit-mask: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 95"%3E%3Cpath d="M27,2 h16 a2,2 0 0 1 2,2 v16 c5,2 15,6 20,15 v52 a6,6 0 0 1 -6,6 h-48 a6,6 0 0 1 -6,-6 v-52 c5,-9 15,-13 20,-15 v-16 a2,2 0 0 1 2,-2 z" fill="black"/%3E%3C/svg%3E') no-repeat center bottom / contain;
+     mask: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 95"%3E%3Cpath d="M27,2 h16 a2,2 0 0 1 2,2 v16 c5,2 15,6 20,15 v52 a6,6 0 0 1 -6,6 h-48 a6,6 0 0 1 -6,-6 v-52 c5,-9 15,-13 20,-15 v-16 a2,2 0 0 1 2,-2 z" fill="black"/%3E%3C/svg%3E') no-repeat center bottom / contain;
+ }
+ 
+ .bottle-slot.bottle {
+     background-color: transparent !important;
+     border: none !important;
+     box-shadow: none !important;
+     overflow: visible !important;
+     width: 70px !important;
+     height: 95px !important;
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

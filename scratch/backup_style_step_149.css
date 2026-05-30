@@ -1,0 +1,69 @@
+Created At: 2026-05-22T13:16:55Z
+Completed At: 2026-05-22T13:16:55Z
+File Path: `file:///C:/Users/user/.gemini/antigravity/brain/70648967-02e5-4eca-b4a4-cbdc882b59b6/implementation_plan.md`
+Total Lines: 80
+Total Bytes: 4287
+Showing lines 1 to 80
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+ # Implementation Plan - Bottle Order Skin System Integration
+ 
+ This plan details the steps to migrate the Bottle Order game to a unified skin system using 13 newly added skin images (`skin1.png` to `skin13.png`), serving them from `public/skins/`, and creating a modular component `BottleSkin.jsx`.
+ 
+ ## User Review Required
+ 
+ > [!IMPORTANT]
+ > - All 13 skins will be moved from the root folder to `public/skins/`.
+ > - The old hardcoded skins (`skin-classic`, `skin-image-1` to `skin-image-5`) in the UI will be removed and replaced by a dynamically rendered shop displaying all 13 skins.
+ > - The central database `src/data/skins.js` will export `bottleSkins` which holds metadata for all 13 skins.
+ > - LocalStorage key `selectedBottleSkin` will be used exclusively. Old stored keys will be migrated.
+ > - The compilation/copy script `build.js` will be updated to copy directory structures like `public/` and `src/` to `dist/` to support ES module imports dynamically.
+ 
+ ## Open Questions
+ 
+ None. The requirements are clearly specified in the user request.
+ 
+ ## Proposed Changes
+ 
+ ---
+ 
+ ### Component & Registry
+ 
+ #### [NEW] [skins.js](file:///c:/Users/user/Desktop/bottle%20order%20first%20try/src/data/skins.js)
+ - Define and export `bottleSkins` array containing metadata (id, name, src, desc, border) for all 13 skins.
+ - Src paths will map to `/skins/skin1.png` through `/skins/skin13.png`.
+ 
+ #### [NEW] [BottleSkin.jsx](file:///c:/Users/user/Desktop/bottle%20order%2
+<truncated 1072 bytes>
+tart.
+   - Safe-migrate old local storage keys (`bottleOrderSkin` and old `skin-image-x` formats) to the unified `selectedBottleSkin` format (defaulting to `skin1`).
+   - Populate the skins shop grid dynamically using the registry.
+   - Update `createBottleDOM` to call `BottleSkin` component.
+   - Bind global functions dynamically if needed, or maintain standard flow.
+ 
+ #### [MODIFY] [style.css](file:///c:/Users/user/Desktop/bottle%20order%20first%20try/style.css)
+ - Insert the requested CSS classes so they are globally available and consistent with `index.html`.
+ 
+ #### [MODIFY] [script.js](file:///c:/Users/user/Desktop/bottle%20order%20first%20try/script.js)
+ - Sync the logic modifications in `index.html` inline script into `script.js` to ensure the backup file remains fully in sync.
+ 
+ ---
+ 
+ ### Build Pipeline
+ 
+ #### [MODIFY] [build.js](file:///c:/Users/user/Desktop/bottle%20order%20first%20try/build.js)
+ - Implement a recursive copy utility to copy `public/` directory (into `dist/`) and `src/` directory (into `dist/src/`) so that the dynamic imports load correctly in the built folder.
+ 
+ ## Verification Plan
+ 
+ ### Automated Tests
+ - Run `bun run build` to verify the build runs and copies all folders and skin files.
+ 
+ ### Manual Verification
+ - Launch the application and navigate to the **Skins/Shop** page.
+ - Verify all 13 skins load correctly and display their actual preview images with no broken icons.
+ - Verify selection of each skin saves to localStorage under `selectedBottleSkin`.
+ - Verify the active skin persists after page refresh.
+ - Run game modes (Classic - Sequence/Time Attack/Blind Memory, Adventure, Daily, Multiplayer) to verify that the selected skin is applied to the gameplay bottles correctly without stretching or distortion.
+ - Verify basic gameplay logic (resetting, matching, scoring, timer, lives) still works.
+ 
+The above content shows the entire, complete file contents of the requested file.

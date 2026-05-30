@@ -1,0 +1,54 @@
+Created At: 2026-05-23T13:51:38Z
+Completed At: 2026-05-23T13:51:38Z
+File Path: `file:///c:/Users/user/Desktop/bottle%20order%20first%20try/style.css`
+Total Lines: 684
+Total Bytes: 18021
+Showing lines 65 to 110
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+ 
+ .screen.active {
+     display: flex;
+     position: relative;
+     animation: fadeIn 0.5s ease;
+ }
+ 
+ #game-screen {
+     max-width: 100%;
+     padding: 1rem;
+ }
+ 
+ .game-wrapper {
+     width: 100%;
+     flex-grow: 1;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     min-height: 0;
+ }
+ 
+ @keyframes fadeIn {
+     from { opacity: 0; transform: scale(0.95); }
+     to { opacity: 1; transform: scale(1); }
+ }
+ 
+ /* Typography */
+ .neon-title {
+     font-size: 3.5rem;
+     font-weight: 900;
+     text-align: center;
+     line-height: 1.1;
+     margin-bottom: 2rem;
+     color: #fff;
+     text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 40px #d100d1;
+     letter-spacing: 2px;
+ }
+ 
+ .neon-title .subtitle {
+     font-size: 2rem;
+     color: #00d2ff;
+     text-shadow: 0 0 10px #0088ff, 0 0 20px #0088ff;
+ }
+ 
+ .neon-title.small { font-size: 2.5rem; }
+ .neon-text { color: #fff; text-shadow: 0 0 8px #ff00ff, 0 0 15px #ff00ff; }
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

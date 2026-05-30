@@ -1,0 +1,18 @@
+Created At: 2026-05-23T08:34:40Z
+Completed At: 2026-05-23T08:34:40Z
+File Path: `file:///C:/Users/user/.gemini/antigravity/brain/70648967-02e5-4eca-b4a4-cbdc882b59b6/task.md`
+Total Lines: 10
+Total Bytes: 656
+Showing lines 1 to 10
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+ # Tasks - Dynamic Bottle Skin Color Variations
+ 
+ - [x] Update style definitions in `style.css` for grayscale normalization and full-height color mask overlay
+ - [x] Update inline style definitions in `index.html` to match `style.css`
+ - [x] Implement inline dynamic mask styles in `index.html`'s `BottleImage` and `createBottleDOM`
+ - [x] Implement inline dynamic mask styles in `script.js`'s `BottleImage` and `createBottleDOM`
+ - [x] Implement inline dynamic mask styles in `src/components/BottleImage.js` and `BottleImage.jsx`
+ - [x] Run `bun run build` to update the production bundle in `dist/`
+ - [x] Verify color variations, sizing, and gameplay behaviors
+ 
+The above content shows the entire, complete file contents of the requested file.

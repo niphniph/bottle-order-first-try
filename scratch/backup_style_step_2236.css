@@ -1,0 +1,78 @@
+Created At: 2026-05-23T13:51:19Z
+Completed At: 2026-05-23T13:51:19Z
+File Path: `file:///c:/Users/user/Desktop/bottle%20order%20first%20try/style.css`
+Total Lines: 681
+Total Bytes: 17928
+Showing lines 1 to 70
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+ :root {
+     --bg-purple: #6a1b9a; /* Approximate from image */
+     --bg-dot: rgba(255, 255, 255, 0.05);
+     --shelf-top: #ffb74d;
+     --shelf-front: #ef6c00;
+     --outline-color: #1a0033; /* Dark purple/black for outlines */
+     
+     --c-red: #FF0040;
+     --c-green: #00FF2A;
+     --c-yellow: #FFEA00;
+     --c-blue: #0088FF;
+     --c-orange: #FF6A00;
+     --c-purple: #AA00FF;
+     --c-cyan: #00E5FF;
+     --c-magenta: #FF00AA;
+     --c-lime: #A6FF00;
+     --c-pink: #FF4D85;
+     --c-teal: #00F0B5;
+     --c-lavender: #D16BFF;
+     --c-brown: #FFB300; /* Amber */
+     --c-beige: #6BFFB3; /* Mint */
+     --c-maroon: #D90022; /* Crimson */
+ }
+ 
+ * {
+     box-sizing: border-box;
+     margin: 0;
+     padding: 0;
+     font-family: 'Fredoka One', cursive, sans-serif;
+ }
+ 
+ html, body {
+     min-height: 100%;
+ }
+ 
+ body {
+     background-color: #111;
+     display: flex;
+     flex-direction: column;
+     justify-content: flex-start;
+     align-items: center;
+     min-height: 100vh;
+     overflow-y: auto;
+     position: relative;
+ }
+ 
+ /* Screen Management */
+ .screen {
+     display: none;
+     flex-direction: column;
+     align-items: center;
+     width: 100%;
+     max-width: 600px;
+     min-height: 100vh;
+     padding-left: 1.5rem;
+     padding-right: 1.5rem;
+     padding-top: 6rem;
+     padding-bottom: 10rem;
+     z-index: 1;
+     box-sizing: border-box;
+ }
+ 
+ .screen.active {
+     display: flex;
+     position: relative;
+     animation: fadeIn 0.5s ease;
+ }
+ 
+ #game-screen {
+     max-width: 100%;
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

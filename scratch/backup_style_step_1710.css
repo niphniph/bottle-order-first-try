@@ -1,0 +1,46 @@
+Created At: 2026-05-23T08:37:40Z
+Completed At: 2026-05-23T08:37:40Z
+File Path: `file:///C:/Users/user/.gemini/antigravity/brain/70648967-02e5-4eca-b4a4-cbdc882b59b6/walkthrough.md`
+Total Lines: 38
+Total Bytes: 2400
+Showing lines 1 to 38
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+ # Walkthrough - Dynamic Bottle Skin Color Variations
+ 
+ This document walks through the design, implementation, and verification of the dynamic bottle skin color variations system with bottle silhouette masking.
+ 
+ ## Changes Made
+ 
+ ### 1. SVG-Based Bottle Silhouette Masking
+ - Designed a custom SVG path of a classic bottle shape (including a narrow neck, sloping shoulders, and a rounded body) to act as a clip/mask:
+   ```xml
+   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 95">
+     <path d="M27,2 h16 a2,2 0 0 1 2,2 v16 c5,2 15,6 20,15 v52 a6,6 0 0 1 -6,6 h-48 a6,6 0 0 1 -6,-6 v-52 c5,-9 15,-13 20,-15 v-16 a2,2 0 0 1 2,-2 z" fill="black"/>
+   </svg>
+   ```
+ - Encoded this SVG path as a Data-URI and applied it as a CSS mask directly on `.bottle-slot` in [style.css](file:///c:/Users/user/Desktop/bottle%20order%20first%20try/style.css) and inline styles in [index.html](file:///c:/Users/user/Desktop/bottle%20order%20first%20try/index.html).
+ - This clips all square image edges, checkerboards, backgrounds, and extra canvas parts from the skin photo assets, leaving only a perfect bottle silhouette.
+ 
+ ### 2. Shop Preview and Live Preview Masking
+ - Updated the shop initialization scripts (`initSkinsShop`) in both `index.html` and `script.js` to size card preview images to `70px` by `95px` and apply the `.bottle-silhouette-masked` utility class.
+ - Updated `updateActiveSkinUI` in both files to shape the main active skin preview using the same mask class, ensuring consistent visual representations across the entire game.
+ 
+ ### 3. Dynamic Grayscale Normalization & Tint Overlay
+ - Normalised base images using a CSS grayscale filter:
+   ```css
+   filter: grayscale(100%) brightness(1.25) contrast(1.15);
+   ```
+ - Configured `.liquid` and `.bottle-liquid` overlays to stretch to 100% size, use `mix-blend-mode: color`, and dynamically map the selected skin as a mask, matching the color class swaps cleanly.
+ 
+ ### 4. Build Synchronization
+ - Ran `bun run build` successfully, copying all updated assets and configurations to the `dist/` directory.
+ 
+ ---
+ 
+ ## Verification Results
+ 
+ ### Shop and Gameplay Visual Inspection
+ - Verified that all square card layouts and active preview panels now render clean bottle silhouettes, removing the raw photo frames.
+ - Verified that the gameplay bottles utilize the identical mask and apply the dynamic gameplay color logic over the grayscale texture template.
+ 
+The above content shows the entire, complete file contents of the requested file.

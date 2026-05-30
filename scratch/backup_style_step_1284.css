@@ -1,0 +1,49 @@
+Created At: 2026-05-22T18:49:32Z
+Completed At: 2026-05-22T18:49:33Z
+File Path: `file:///C:/Users/user/.gemini/antigravity/brain/70648967-02e5-4eca-b4a4-cbdc882b59b6/walkthrough.md`
+Total Lines: 41
+Total Bytes: 2076
+Showing lines 1 to 41
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+ # Walkthrough - Fix Bottle Skin Sizing and Overlays
+ 
+ This document summarizes the changes made to correct the bottle skin rendering, ensuring the selected skin displays full-size (70px x 95px) and does not show up as a tiny piece inside the old classic/mystery bottle shape.
+ 
+ ## Changes Made
+ 
+ ### 1. Unified Sizing Constraints to 70px x 95px
+ - Updated `.bottle-slot` and `.bottle-slot.bottle` to use the recommended dimensions: `width: 70px !important; height: 95px !important;`.
+ - Removed/overrode the legacy `.bottle.skin-image` dimensions (which restricted width to `40px` and height to `80px`) to use `70px !important` and `95px !important` instead.
+ - Added `z-index: 2` and `box-shadow: none !important` to `.bottle-skin` and `.bottle-image` to ensure they render cleanly.
+ 
+ ### 2. Disabled Legacy Outlines & Pseudo-Elements
+ - Configured a CSS override to hide all neck, shine, and slot borders:
+   ```css
+   .bottle-slot::before,
+   .bottle-slot::after,
+   .bottle-slot.bottle::before,
+   .bottle-slot.bottle::after,
+   .bottle::before,
+   .bottle::after {
+       display: none !important;
+       content: none !important;
+   }
+   ```
+ - This completely stops the old classic bottle shape from overlaying the selected skin image.
+ - Synchronized these styles in both the inline `<style>` section of `index.html` and the external `style.css`.
+ 
+ ### 3. Aligned Script Component Classes
+ - Updated the React-like `BottleImage.jsx` class names and style properties to match `BottleImage.js` and the inline script, adding `skin-image` and `skin-img` classes to ensure perfect layout compatibility.
+ 
+ ### 4. Build Synchronization
+ - Ran `bun run build` to copy the modified files into the production bundle directory (`dist/`).
+ 
+ ---
+ 
+ ## Verification Results
+ 
+ ### CSS Layout Verification
+ - Inspected the built `dist/index.html` styles and verified that the dimensions are mapped to `70px !important` by `95px !important`.
+ - Verified that pseudo-elements (`::before`/`::after`) on `.bottle` and `.bottle-slot` are explicitly hidden with `display: none !important` and `content: none !important`.
+ 
+The above content shows the entire, complete file contents of the requested file.
