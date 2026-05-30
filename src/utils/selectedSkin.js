@@ -3,13 +3,20 @@ export function getSelectedBottleSkinSrc() {
     const savedObject = localStorage.getItem("selectedBottleSkin");
     if (savedObject) {
       const parsed = JSON.parse(savedObject);
-      if (parsed?.src) return parsed.src;
-      if (typeof parsed === "string") return parsed;
+      if (parsed?.src) {
+        // remove leading slash if present
+        if (parsed.src.startsWith("/")) return parsed.src.slice(1);
+        return parsed.src;
+      }
+      if (typeof parsed === "string") {
+        if (parsed.startsWith("/")) return parsed.slice(1);
+        return parsed;
+      }
     }
 
-    return "/skins/skin1.png";
+    return "skins/skin1.png";
   } catch (error) {
-    return "/skins/skin1.png";
+    return "skins/skin1.png";
   }
 }
 
@@ -19,6 +26,8 @@ export function setSelectedBottleSkinSrc(src) {
   if (match) {
     id = match[0];
   }
-  localStorage.setItem("selectedBottleSkin", JSON.stringify({ id, src }));
+  // Make sure to store without leading slash
+  const cleanSrc = src.startsWith("/") ? src.slice(1) : src;
+  localStorage.setItem("selectedBottleSkin", JSON.stringify({ id, src: cleanSrc }));
   window.dispatchEvent(new Event("selectedBottleSkinChanged"));
 }

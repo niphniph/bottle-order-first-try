@@ -9,56 +9,56 @@ export const bottleSkins = [
   {
     id: 'skin1',
     name: 'Shaker',
-    src: '/skins/skin1.png',
+    src: 'skins/skin1.png',
     desc: 'A high-performance matte protein shaker with sharp geometric lines and a futuristic cyan translucent window.',
     border: 'neon-border-secondary'
   },
   {
     id: 'skin2',
     name: 'Baby',
-    src: '/skins/skin2.png',
+    src: 'skins/skin2.png',
     desc: 'A stylized baby bottle reimagined with a retro-futuristic aesthetic featuring soft pastel purple glow.',
     border: 'neon-border-hotpink'
   },
   {
     id: 'skin4',
     name: 'Dark',
-    src: '/skins/skin4.png',
+    src: 'skins/skin4.png',
     desc: 'A stealth-inspired matte black bottle with sharp, defined edges. Minimalist neon cyan highlights.',
     border: 'glass-card'
   },
   {
     id: 'skin5',
     name: 'Magical',
-    src: '/skins/skin5.png',
+    src: 'skins/skin5.png',
     desc: 'An ethereal iridescent bottle that shifts between cyan, pink, and acid green with orbiting light particles.',
     border: 'neon-border-tertiary'
   },
   {
     id: 'skin6',
     name: 'Neon Oasis',
-    src: '/skins/skin6.png',
+    src: 'skins/skin6.png',
     desc: 'A sleek custom skin featuring an elegant body line and high-performance reflections.',
     border: 'glass-card'
   },
   {
     id: 'skin11',
     name: 'Holo Crystal',
-    src: '/skins/skin11.png',
+    src: 'skins/skin11.png',
     desc: 'A crystal-clear glass bottle displaying vibrant holographic reflections.',
     border: 'glass-card'
   },
   {
     id: 'skin12',
     name: 'Tactical Violet',
-    src: '/skins/skin12.png',
+    src: 'skins/skin12.png',
     desc: 'A tactical military-style canteen with a rugged non-slip grip surface.',
     border: 'neon-border-secondary'
   },
   {
     id: 'skin13',
     name: 'Nebula Core',
-    src: '/skins/skin13.png',
+    src: 'skins/skin13.png',
     desc: 'An alien-tech artifact skin pulsing with deep space ultraviolet energy.',
     border: 'neon-border-primary'
   }

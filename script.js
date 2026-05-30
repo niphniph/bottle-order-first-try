@@ -1,3 +1,131 @@
+// --- Energy System Constants & Storage Logic ---
+const MAX_ENERGY = 50;
+const MOVE_COST = 2.5;
+const LOSE_COST = 5;
+const AD_REWARD = 5;
+
+function getEnergy() {
+    const saved = localStorage.getItem("playerEnergy");
+    if (saved === null) return MAX_ENERGY;
+    const num = Number(saved);
+    if (isNaN(num) || num < 0 || num > MAX_ENERGY) {
+        localStorage.setItem("playerEnergy", String(MAX_ENERGY));
+        return MAX_ENERGY;
+    }
+    return Math.max(0, Math.min(MAX_ENERGY, num));
+}
+
+function setEnergy(value) {
+    const safeValue = Math.max(0, Math.min(MAX_ENERGY, Number(value)));
+    localStorage.setItem("playerEnergy", String(safeValue));
+    updateEnergyUI();
+}
+
+function spendEnergy(amount) {
+    const current = getEnergy();
+    if (current < amount) {
+        showEnergyModal();
+        return false;
+    }
+    setEnergy(current - amount);
+    return true;
+}
+
+function rewardEnergyFromAd() {
+    const current = getEnergy();
+    setEnergy(current + AD_REWARD);
+}
+
+function updateEnergyUI() {
+    const current = getEnergy();
+    // format to remove trailing .0 if it's an integer, else show .5
+    const formatted = current % 1 === 0 ? current.toFixed(0) : current.toFixed(1);
+    
+    // Header value
+    const headerVal = document.getElementById("header-energy-value");
+    if (headerVal) headerVal.textContent = `${formatted}/${MAX_ENERGY}`;
+    
+    // Menu values
+    const menuVal = document.getElementById("menu-energy-display");
+    if (menuVal) menuVal.textContent = `${formatted} / ${MAX_ENERGY}`;
+    
+    const classicVal = document.getElementById("classic-energy-display");
+    if (classicVal) classicVal.textContent = `${formatted} / ${MAX_ENERGY}`;
+}
+
+// Simulated ad states and progress bar animation
+let adTimeout = null;
+let adInterval = null;
+
+function watchAdForEnergy() {
+    if (getEnergy() >= MAX_ENERGY) {
+        alert("Energy is already full!");
+        return;
+    }
+    showAdOverlay();
+}
+
+function watchAdFromModal() {
+    closeEnergyModal();
+    watchAdForEnergy();
+}
+
+function showAdOverlay() {
+    const adOverlay = document.getElementById("ad-overlay");
+    const adBar = document.getElementById("ad-progress-bar");
+    const timerText = document.getElementById("ad-timer-text");
+    if (!adOverlay || !adBar) return;
+    
+    adOverlay.classList.remove("hidden");
+    
+    // Reset bar width and transition
+    adBar.style.transition = "none";
+    adBar.style.width = "0%";
+    
+    let secondsLeft = 3;
+    if (timerText) timerText.textContent = `Ad completes in ${secondsLeft} seconds`;
+    
+    // Force browser reflow to apply style reset before starting transition
+    adBar.getBoundingClientRect();
+    
+    // Set transition parameters for exactly 3 seconds
+    adBar.style.transition = "width 3s linear";
+    adBar.style.width = "100%";
+    
+    adInterval = setInterval(() => {
+        secondsLeft--;
+        if (secondsLeft >= 0 && timerText) {
+            timerText.textContent = `Ad completes in ${secondsLeft} seconds`;
+        }
+    }, 1000);
+    
+    adTimeout = setTimeout(() => {
+        hideAdOverlay();
+        rewardEnergyFromAd();
+        if (typeof sound !== "undefined" && typeof sound.playWin === "function") {
+            sound.playWin();
+        }
+        alert("+5 Energy added!");
+    }, 3000);
+}
+
+function hideAdOverlay() {
+    const adOverlay = document.getElementById("ad-overlay");
+    if (adOverlay) adOverlay.classList.add("hidden");
+    clearInterval(adInterval);
+    clearTimeout(adTimeout);
+}
+
+function showEnergyModal() {
+    const modal = document.getElementById("out-of-energy-modal");
+    if (modal) modal.classList.remove("hidden");
+}
+
+function closeEnergyModal() {
+    const modal = document.getElementById("out-of-energy-modal");
+    if (modal) modal.classList.add("hidden");
+}
+
 const COLORS = [
     'color-red', 'color-green', 'color-yellow', 'color-blue', 'color-orange', 
     'color-purple', 'color-cyan', 'color-magenta', 'color-lime', 'color-pink', 
@@ -84,95 +212,89 @@ const skinImageCallbacks = {};
 const processedSkinCache = {};
 
 function removeSkinBackground(img) {
-    const canvas = document.createElement('canvas');
+    const canvasOriginal = document.createElement('canvas');
     const w = 512;
     const h = 512;
-    canvas.width = w;
-    canvas.height = h;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0, w, h);
+    canvasOriginal.width = w;
+    canvasOriginal.height = h;
+    const ctxOrig = canvasOriginal.getContext('2d');
+    ctxOrig.drawImage(img, 0, 0, w, h);
     
-    const imgData = ctx.getImageData(0, 0, w, h);
-    const data = imgData.data;
+    const imgDataOrig = ctxOrig.getImageData(0, 0, w, h);
+    const dataOrig = imgDataOrig.data;
     
-    // Sample border pixels to find background color candidates
-    const borderSamples = [];
-    const step = 16;
-    for (let x = 0; x < w; x += step) {
-        borderSamples.push(getPixel(x, 0));
-        borderSamples.push(getPixel(x, h - 1));
-    }
-    for (let y = 0; y < h; y += step) {
-        borderSamples.push(getPixel(0, y));
-        borderSamples.push(getPixel(w - 1, y));
+    // Sample border colors
+    const bgColors = [];
+    function addBgColor(r, g, b) {
+        for (const c of bgColors) {
+            const dist = Math.sqrt((r - c[0]) ** 2 + (g - c[1]) ** 2 + (b - c[2]) ** 2);
+            if (dist < 30) return;
+        }
+        bgColors.push([r, g, b]);
     }
     
-    function getPixel(x, y) {
-        const idx = (y * w + x) * 4;
-        return [data[idx], data[idx + 1], data[idx + 2]];
+    const margin = 5;
+    for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+            if (x < margin || x >= w - margin || y < margin || y >= h - margin) {
+                const idx = (y * w + x) * 4;
+                addBgColor(dataOrig[idx], dataOrig[idx + 1], dataOrig[idx + 2]);
+            }
+        }
     }
     
     const visited = new Uint8Array(w * h);
     const queue = [];
-    
-    // Initialize BFS with all border pixels
-    for (let x = 0; x < w; x++) {
-        const idxTop = 0 * w + x;
-        visited[idxTop] = 1;
-        queue.push(idxTop);
-        
-        const idxBottom = (h - 1) * w + x;
-        visited[idxBottom] = 1;
-        queue.push(idxBottom);
-    }
-    for (let y = 1; y < h - 1; y++) {
-        const idxLeft = y * w + 0;
-        visited[idxLeft] = 1;
-        queue.push(idxLeft);
-        
-        const idxRight = y * w + (w - 1);
-        visited[idxRight] = 1;
-        queue.push(idxRight);
+    for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+            if (x < margin || x >= w - margin || y < margin || y >= h - margin) {
+                const idx = y * w + x;
+                visited[idx] = 1;
+                queue.push(idx);
+            }
+        }
     }
     
     function colorDistance(c1, c2) {
-        return Math.sqrt(
-            (c1[0] - c2[0]) ** 2 +
-            (c1[1] - c2[1]) ** 2 +
-            (c1[2] - c2[2]) ** 2
-        );
+        return Math.sqrt((c1[0] - c2[0]) ** 2 + (c1[1] - c2[1]) ** 2 + (c1[2] - c2[2]) ** 2);
     }
     
-    const threshold = 85; // Aggressive background sample matching threshold
-    
+    const threshold = 65;
     let head = 0;
     while (head < queue.length) {
         const idx = queue[head++];
         const x = idx % w;
         const y = Math.floor(idx / w);
-        
         const offset = idx * 4;
-        const color = [data[offset], data[offset + 1], data[offset + 2]];
+        
+        const r = dataOrig[offset];
+        const g = dataOrig[offset + 1];
+        const b = dataOrig[offset + 2];
+        const a = dataOrig[offset + 3];
+        
+        if (a === 0) continue;
         
         let isBg = false;
-        // Check matching with border samples
-        for (const sample of borderSamples) {
-            if (colorDistance(color, sample) < threshold) {
+        for (const c of bgColors) {
+            if (colorDistance([r, g, b], c) < threshold) {
                 isBg = true;
                 break;
             }
         }
-        // OR check if pixel is off-white (aggressively removes solid white/off-white frames)
+        
         if (!isBg) {
-            if (color[0] > 180 && color[1] > 180 && color[2] > 180) {
-                isBg = true;
+            const isWhiteOrGray = (r > 190 && g > 190 && b > 190);
+            if (isWhiteOrGray) {
+                const distToGray = Math.abs(r - 204) + Math.abs(g - 204) + Math.abs(b - 204);
+                const distToWhite = Math.abs(r - 255) + Math.abs(g - 255) + Math.abs(b - 255);
+                if (distToGray < 45 || distToWhite < 45) {
+                    isBg = true;
+                }
             }
         }
         
         if (isBg) {
-            data[offset + 3] = 0; // make 100% transparent
-            
-            // Push neighbors
+            dataOrig[offset + 3] = 0;
             if (x > 0 && !visited[idx - 1]) { visited[idx - 1] = 1; queue.push(idx - 1); }
             if (x < w - 1 && !visited[idx + 1]) { visited[idx + 1] = 1; queue.push(idx + 1); }
             if (y > 0 && !visited[idx - w]) { visited[idx - w] = 1; queue.push(idx - w); }
@@ -180,11 +302,11 @@ function removeSkinBackground(img) {
         }
     }
     
-    // Erode edge halos and off-white anti-aliasing residues thoroughly with digital defringing (4 passes)
+    // Defringe original canvas
     for (let pass = 0; pass < 4; pass++) {
         const tempAlpha = new Uint8Array(w * h);
         for (let i = 0; i < w * h; i++) {
-            tempAlpha[i] = data[i * 4 + 3];
+            tempAlpha[i] = dataOrig[i * 4 + 3];
         }
         for (let y = 1; y < h - 1; y++) {
             for (let x = 1; x < w - 1; x++) {
@@ -202,17 +324,19 @@ function removeSkinBackground(img) {
                     
                     if (hasTransNeighbor) {
                         const offset = idx * 4;
-                        const color = [data[offset], data[offset + 1], data[offset + 2]];
+                        const r = dataOrig[offset];
+                        const g = dataOrig[offset + 1];
+                        const b = dataOrig[offset + 2];
                         
-                        // Pixel defringing: clear edge white fringes and fade out light gray borders
-                        if (color[0] > 140 && color[1] > 140 && color[2] > 140) {
-                            data[offset + 3] = 0;
-                        } else {
-                            const brightness = (color[0] + color[1] + color[2]) / 3;
-                            if (brightness > 100) {
-                                const factor = (255 - brightness) / 155;
-                                data[offset + 3] = Math.round(data[offset + 3] * factor);
+                        let matchedBg = false;
+                        for (const c of bgColors) {
+                            if (Math.abs(r - c[0]) + Math.abs(g - c[1]) + Math.abs(b - c[2]) < 120) {
+                                matchedBg = true;
+                                break;
                             }
+                        }
+                        if (matchedBg) {
+                            dataOrig[offset + 3] = 0;
                         }
                     }
                 }
@@ -220,25 +344,40 @@ function removeSkinBackground(img) {
         }
     }
     
-    // Convert to grayscale and apply brightness/contrast adjustments on the CPU
-    for (let i = 0; i < data.length; i += 4) {
-        if (data[i + 3] === 0) continue; // Skip fully transparent pixels
-        const r = data[i];
-        const g = data[i + 1];
-        const b = data[i + 2];
+    ctxOrig.putImageData(imgDataOrig, 0, 0);
+    
+    // Create grayscale version
+    const canvasGrayscale = document.createElement('canvas');
+    canvasGrayscale.width = w;
+    canvasGrayscale.height = h;
+    const ctxGray = canvasGrayscale.getContext('2d');
+    ctxGray.drawImage(canvasOriginal, 0, 0);
+    
+    const imgDataGray = ctxGray.getImageData(0, 0, w, h);
+    const dataGray = imgDataGray.data;
+    
+    for (let i = 0; i < dataGray.length; i += 4) {
+        if (dataGray[i + 3] === 0) continue;
+        const r = dataGray[i];
+        const g = dataGray[i + 1];
+        const b = dataGray[i + 2];
         
         let v = 0.299 * r + 0.587 * g + 0.114 * b;
         v = v * 1.25;
         v = (v - 128) * 1.15 + 128;
         v = Math.max(0, Math.min(255, v));
         
-        data[i] = v;
-        data[i + 1] = v;
-        data[i + 2] = v;
+        dataGray[i] = v;
+        dataGray[i + 1] = v;
+        dataGray[i + 2] = v;
     }
     
-    ctx.putImageData(imgData, 0, 0);
-    return canvas;
+    ctxGray.putImageData(imgDataGray, 0, 0);
+    
+    return {
+        original: canvasOriginal,
+        grayscale: canvasGrayscale
+    };
 }
 
 function getSkinImageElement(src, callback) {
@@ -361,6 +500,7 @@ function renderBottleToCanvas(canvas, skinImageElement, colorHex, isHidden) {
     
     if (isHidden) {
         if (skinImageElement) {
+            const imgEl = skinImageElement.original || skinImageElement;
             // Render custom skin silhouette
             // 1. Draw the white outline around the skin shape
             ctx.save();
@@ -368,7 +508,7 @@ function renderBottleToCanvas(canvas, skinImageElement, colorHex, isHidden) {
             tempCanvas.width = w;
             tempCanvas.height = h;
             const tempCtx = tempCanvas.getContext('2d');
-            tempCtx.drawImage(skinImageElement, 0, 0, w, h);
+            tempCtx.drawImage(imgEl, 0, 0, w, h);
             
             tempCtx.globalCompositeOperation = 'source-in';
             tempCtx.fillStyle = '#ffffff';
@@ -384,7 +524,7 @@ function renderBottleToCanvas(canvas, skinImageElement, colorHex, isHidden) {
             
             // 2. Draw the solid dark purple fill inside the skin shape
             ctx.save();
-            ctx.drawImage(skinImageElement, 0, 0, w, h);
+            ctx.drawImage(imgEl, 0, 0, w, h);
             ctx.globalCompositeOperation = 'source-in';
             ctx.fillStyle = 'rgba(26, 0, 51, 0.6)';
             ctx.fillRect(0, 0, w, h);
@@ -408,9 +548,12 @@ function renderBottleToCanvas(canvas, skinImageElement, colorHex, isHidden) {
     }
     
     if (skinImageElement) {
+        const imgOrig = skinImageElement.original || skinImageElement;
+        const imgGray = skinImageElement.grayscale || skinImageElement;
+        
         // 1. Draw the processed skin image directly onto the transparent canvas
         ctx.globalCompositeOperation = 'source-over';
-        ctx.drawImage(skinImageElement, 0, 0, w, h);
+        ctx.drawImage(imgOrig, 0, 0, w, h);
         
         // 2. Fill the silhouette exactly with the gameplay color
         ctx.globalCompositeOperation = 'source-in';
@@ -419,11 +562,11 @@ function renderBottleToCanvas(canvas, skinImageElement, colorHex, isHidden) {
         
         // 3. Multiply grayscale skin shading and highlights on top
         ctx.globalCompositeOperation = 'multiply';
-        ctx.drawImage(skinImageElement, 0, 0, w, h);
+        ctx.drawImage(imgGray, 0, 0, w, h);
         
         // 4. Mask back to the skin's original alpha to crop any blended edge bleeding
         ctx.globalCompositeOperation = 'destination-in';
-        ctx.drawImage(skinImageElement, 0, 0, w, h);
+        ctx.drawImage(imgOrig, 0, 0, w, h);
         
         // 5. Restore default composite operation
         ctx.globalCompositeOperation = 'source-over';
@@ -531,8 +674,14 @@ function getSelectedBottleSkinSrc() {
     const savedObject = localStorage.getItem("selectedBottleSkin");
     if (savedObject) {
       const parsed = JSON.parse(savedObject);
-      if (parsed?.src) return parsed.src;
-      if (typeof parsed === "string") return parsed;
+      if (parsed?.src) {
+        if (parsed.src.startsWith("/")) return parsed.src.slice(1);
+        return parsed.src;
+      }
+      if (typeof parsed === "string") {
+        if (parsed.startsWith("/")) return parsed.slice(1);
+        return parsed;
+      }
     }
 
     return "classic";
@@ -547,7 +696,8 @@ function setSelectedBottleSkinSrc(src) {
     const match = src.match(/skin\d+/);
     if (match) id = match[0];
   }
-  localStorage.setItem("selectedBottleSkin", JSON.stringify({ id, src }));
+  const cleanSrc = (src && src.startsWith("/")) ? src.slice(1) : src;
+  localStorage.setItem("selectedBottleSkin", JSON.stringify({ id, src: cleanSrc }));
   window.dispatchEvent(new Event("selectedBottleSkinChanged"));
 }
 
@@ -784,11 +934,12 @@ function initSkinsShop(skins) {
             renderBottleToCanvas(canvas, null, '#00E5FF', false);
             img.src = canvas.toDataURL();
         } else {
-            getSkinImageElement(skin.src, (processedCanvas) => {
+            getSkinImageElement(skin.src, (processedData) => {
                 const canvas = document.createElement('canvas');
                 canvas.width = 70;
                 canvas.height = 95;
-                renderBottleToCanvas(canvas, processedCanvas, previewColor, false);
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(processedData.original, 0, 0, 70, 95);
                 img.src = canvas.toDataURL();
             });
         }
@@ -1237,11 +1388,12 @@ function updateActiveSkinUI(activeSkinId) {
             renderBottleToCanvas(canvas, null, '#00E5FF', false);
             previewImg.src = canvas.toDataURL();
         } else {
-            getSkinImageElement(metadata.image, (processedCanvas) => {
+            getSkinImageElement(metadata.image, (processedData) => {
                 const canvas = document.createElement('canvas');
                 canvas.width = 70;
                 canvas.height = 95;
-                renderBottleToCanvas(canvas, processedCanvas, previewColor, false);
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(processedData.original, 0, 0, 70, 95);
                 previewImg.src = canvas.toDataURL();
             });
         }
@@ -1530,6 +1682,10 @@ function closeModal() {
 
 // --- Game Logic ---
 function startGameMode(mode) {
+    if (getEnergy() <= 0) {
+        showEnergyModal();
+        return;
+    }
     showLoadingScreen(() => {
         currentMode = mode;
         currentLevel = 1;
@@ -1704,6 +1860,9 @@ function startTimeAttackTimer() {
             isPlaying = false;
             sound.playGameOver();
             
+            // Deduct 5 energy on loss
+            setEnergy(getEnergy() - LOSE_COST);
+            
             if (currentMode === 'daily') {
                 localStorage.setItem('bottleOrderDailyLastPlayed', new Date().toDateString());
                 localStorage.setItem('bottleOrderDailyStatus', 'lose');
@@ -1743,8 +1902,22 @@ function renderBoard() {
 
 function createBottleDOM({ color, skinId, hidden, isInteractive, isSelected, index }) {
     if (hidden) {
-        const onClick = isInteractive ? () => handleBottleClick(index) : null;
-        return createHiddenBottleDOM({ isSelected, onClick });
+        const bottleSrc = getSelectedBottleSkinSrc();
+        if (bottleSrc && bottleSrc !== 'classic' && bottleSrc !== 'skin-classic') {
+            const bottleSlot = BottleImage({
+                color: null,
+                hidden: true,
+                isSelected,
+                className: 'bottle'
+            });
+            if (isInteractive) {
+                bottleSlot.onclick = () => handleBottleClick(index);
+            }
+            return bottleSlot;
+        } else {
+            const onClick = isInteractive ? () => handleBottleClick(index) : null;
+            return createHiddenBottleDOM({ isSelected, onClick });
+        }
     }
     if (typeof BottleImage === 'function') {
         const bottleSlot = BottleImage({
@@ -1954,6 +2127,19 @@ function initDragAndDrop(container) {
                 }
                 
                 if (hoverIndex !== -1 && hoverIndex !== index) {
+                    // Check energy first
+                    if (!spendEnergy(2.5)) {
+                        slot.classList.add('swapping');
+                        slot.style.transform = 'translate3d(0px, 0px, 0) scale(1.15) translateY(-12px)';
+                        setTimeout(() => {
+                            slot.classList.remove('swapping');
+                            slot.style.transform = '';
+                            selectedIndex = -1;
+                            renderBoard();
+                        }, 220);
+                        return;
+                    }
+                    
                     // Premium Coordinated Swap Animation
                     const rectTarget = slotRects[hoverIndex];
                     const deltaX = rectTarget.left - rectSelected.left;
@@ -2035,6 +2221,13 @@ function initDragAndDrop(container) {
                         selectedIndex = -1;
                         renderBoard();
                     } else {
+                        // Check energy first
+                        if (!spendEnergy(2.5)) {
+                            selectedIndex = -1;
+                            renderBoard();
+                            return;
+                        }
+                        
                         // Premium click swap animated slide
                         const oldCorrect = countCorrectBottles();
                         const fromIdx = selectedIndex;
@@ -2162,6 +2355,13 @@ function handleBottleClick(index) {
             selectedIndex = -1;
             sound.playClick();
         } else {
+            // Check energy first
+            if (!spendEnergy(2.5)) {
+                topRow.children[selectedIndex].classList.remove('selected');
+                selectedIndex = -1;
+                return;
+            }
+            
             const oldCorrect = countCorrectBottles();
             
             // Perform instant state swap
@@ -2202,6 +2402,10 @@ function gameOver() {
     isPlaying = false;
     clearInterval(timerInterval);
     sound.playGameOver();
+    
+    // Deduct 5 energy on loss
+    setEnergy(getEnergy() - LOSE_COST);
+    
     document.getElementById('win-message').classList.remove('hidden');
     document.getElementById('win-message').innerHTML = `<h2 style="color:red;">GAME OVER!</h2><p style="font-size:1rem; margin-top:10px;">You ran out of lives.</p><button class="game-btn reset-btn" style="margin-top:15px" onclick="showScreen('main-menu')">Main Menu</button>`;
 }
@@ -2338,6 +2542,7 @@ function startPlayer1() {
 }
 
 window.addEventListener('load', () => {
+    updateEnergyUI();
     // Scroll lock removed to enable normal scrolling on menu pages
     // Generate magic particles for the background
     const particlesContainer = document.getElementById('magic-particles');
