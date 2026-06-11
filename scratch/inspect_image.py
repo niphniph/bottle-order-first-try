@@ -1,29 +1,21 @@
-import os
+import sys
 from PIL import Image
 
-image_path = r"c:\Users\user\Desktop\bottle order first try\public\skins\skin1.png"
-if os.path.exists(image_path):
-    try:
-        img = Image.open(image_path)
-        print("Format:", img.format)
-        print("Mode:", img.mode)
-        print("Size:", img.size)
-        
-        # Check if alpha channel exists
-        if img.mode in ('RGBA', 'LA') or (img.mode == 'P' and 'transparency' in img.info):
-            alpha = img.convert('RGBA').split()[-1]
-            bbox = alpha.getbbox()
-            print("Alpha bounding box:", bbox)
-            
-            # Count completely opaque, semi-transparent, and transparent pixels
-            data = alpha.getdata()
-            opaque = sum(1 for p in data if p == 255)
-            transparent = sum(1 for p in data if p == 0)
-            semi = len(data) - opaque - transparent
-            print(f"Pixels - Opaque: {opaque}, Transparent: {transparent}, Semi-transparent: {semi}")
-        else:
-            print("No alpha channel present in image!")
-    except Exception as e:
-        print("Error opening image:", e)
-else:
-    print("File not found:", image_path)
+img_path = r"C:\Users\user\.gemini\antigravity\brain\c892bae1-3270-4160-9870-7444bfa68746\media__1781209855037.png"
+try:
+    img = Image.open(img_path)
+    print(f"Image format: {img.format}, size: {img.size}, mode: {img.mode}")
+    img = img.convert("RGBA")
+    w, h = img.size
+    # print corner colors
+    print("Top-left pixel:", img.getpixel((0, 0)))
+    print("Top-right pixel:", img.getpixel((w - 1, 0)))
+    print("Bottom-left pixel:", img.getpixel((0, h - 1)))
+    print("Bottom-right pixel:", img.getpixel((w - 1, h - 1)))
+    # print some other edge pixels
+    print("Pixel (10, 0):", img.getpixel((10, 0)))
+    print("Pixel (20, 0):", img.getpixel((20, 0)))
+    print("Pixel (0, 10):", img.getpixel((0, 10)))
+    print("Pixel (0, 20):", img.getpixel((0, 20)))
+except Exception as e:
+    print("Error:", e)

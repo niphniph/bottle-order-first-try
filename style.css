@@ -1446,3 +1446,24 @@ button.back-button,
   font-weight: 900 !important;
   box-shadow: 0 0 14px rgba(255, 216, 77, 0.9) !important;
 }
+
+/* ======================================================== */
+/* ENFORCE PERFECTLY TRANSPARENT BACKGROUNDS ON SKIN BOTTLES */
+/* ======================================================== */
+.bottle.skin-image,
+.bottle-canvas,
+.bottle-skin,
+.skin-img,
+.bottle img,
+.bottle-slot {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.bottle.skin-image {
+  filter: none !important;
+}
+

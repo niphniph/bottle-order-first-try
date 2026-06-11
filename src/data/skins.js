@@ -21,6 +21,13 @@ export const bottleSkins = [
     border: 'neon-border-hotpink'
   },
   {
+    id: 'skin3',
+    name: 'Bamboo Chameleon',
+    src: 'skins/skin3.png',
+    desc: 'A sustainable bamboo stalk bottle featuring a friendly chameleon companion.',
+    border: 'neon-border-tertiary'
+  },
+  {
     id: 'skin4',
     name: 'Dark',
     src: 'skins/skin4.png',
@@ -42,6 +49,34 @@ export const bottleSkins = [
     border: 'glass-card'
   },
   {
+    id: 'skin7',
+    name: 'Ocean Coral',
+    src: 'skins/skin7.png',
+    desc: 'A miniature aquatic ecosystem bottle containing coral, starfish, and swimming fish.',
+    border: 'neon-border-secondary'
+  },
+  {
+    id: 'skin8',
+    name: 'Cyber Circuit',
+    src: 'skins/skin8.png',
+    desc: 'A high-tech cyberpunk bottle pulsing with bright green neon circuit patterns.',
+    border: 'neon-border-tertiary'
+  },
+  {
+    id: 'skin9',
+    name: 'Nebula Astronaut',
+    src: 'skins/skin9.png',
+    desc: 'A space canteen helmet design revealing swirling galaxy nebula clouds inside.',
+    border: 'neon-border-primary'
+  },
+  {
+    id: 'skin10',
+    name: 'Rainbow Unicorn',
+    src: 'skins/skin10.png',
+    desc: 'A magical mermaid-scale bottle with a unicorn horn radiating rainbow light.',
+    border: 'neon-border-hotpink'
+  },
+  {
     id: 'skin11',
     name: 'Holo Crystal',
     src: 'skins/skin11.png',
@@ -61,5 +96,12 @@ export const bottleSkins = [
     src: 'skins/skin13.png',
     desc: 'An alien-tech artifact skin pulsing with deep space ultraviolet energy.',
     border: 'neon-border-primary'
+  },
+  {
+    id: 'skin14',
+    name: 'Aqua Bottle Skin',
+    src: 'skins/skin14.png',
+    desc: 'A playable pixel sprite skin with original cyan and blue colors.',
+    border: 'neon-border-secondary'
   }
 ];

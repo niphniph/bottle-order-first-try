@@ -210,6 +210,97 @@ let player2Time = 0;
 const skinAssetCache = {};
 const skinAssetCallbacks = {};
 
+function removeOuterWhiteFrame(canvas) {
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  const w = canvas.width;
+  const h = canvas.height;
+  const imgData = ctx.getImageData(0, 0, w, h);
+  const data = imgData.data;
+
+  const visited = new Uint8Array(w * h);
+  const queue = [];
+
+  function isNearWhite(i) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    const a = data[i + 3];
+    return a > 0 && r > 210 && g > 210 && b > 210;
+  }
+
+  function enqueue(x, y) {
+    if (x < 0 || y < 0 || x >= w || y >= h) return;
+    const idx = y * w + x;
+    if (visited[idx]) return;
+    visited[idx] = 1;
+    queue.push(idx);
+  }
+
+  // start flood fill from outer edges only
+  for (let x = 0; x < w; x++) {
+    enqueue(x, 0);
+    enqueue(x, h - 1);
+  }
+  for (let y = 0; y < h; y++) {
+    enqueue(0, y);
+    enqueue(w - 1, y);
+  }
+
+  let head = 0;
+  while (head < queue.length) {
+    const idx = queue[head++];
+    const x = idx % w;
+    const y = Math.floor(idx / w);
+    const i = idx * 4;
+
+    if (isNearWhite(i)) {
+      data[i + 3] = 0; // make transparent
+
+      enqueue(x + 1, y);
+      enqueue(x - 1, y);
+      enqueue(x, y + 1);
+      enqueue(x, y - 1);
+      enqueue(x + 1, y + 1);
+      enqueue(x - 1, y - 1);
+      enqueue(x + 1, y - 1);
+      enqueue(x - 1, y + 1);
+    }
+  }
+
+  // optional second cleanup: remove thin white fringe touching transparency
+  const alphaCopy = new Uint8Array(w * h);
+  for (let i = 0; i < w * h; i++) {
+    alphaCopy[i] = data[i * 4 + 3];
+  }
+
+  for (let y = 1; y < h - 1; y++) {
+    for (let x = 1; x < w - 1; x++) {
+      const idx = y * w + x;
+      const i = idx * 4;
+
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+      const a = data[i + 3];
+
+      if (a === 0) continue;
+
+      const nearTransparent =
+        alphaCopy[idx - 1] === 0 ||
+        alphaCopy[idx + 1] === 0 ||
+        alphaCopy[idx - w] === 0 ||
+        alphaCopy[idx + w] === 0;
+
+      if (nearTransparent && r > 220 && g > 220 && b > 220) {
+        data[i + 3] = 0;
+      }
+    }
+  }
+
+  ctx.putImageData(imgData, 0, 0);
+  return canvas;
+}
+
 function cleanSkinBackgroundPreserveColor(img) {
   const canvas = document.createElement("canvas");
   const w = 512;
@@ -401,8 +492,10 @@ function getSkinAsset(src, callback) {
   img.crossOrigin = "anonymous";
 
   img.onload = () => {
-    const cleanedOriginalCanvas = cleanSkinBackgroundPreserveColor(img);
-    const gameplayMaskCanvas = createGameplayMaskFromCleanedCanvas(cleanedOriginalCanvas);
+    let cleanedOriginalCanvas = cleanSkinBackgroundPreserveColor(img);
+    removeOuterWhiteFrame(cleanedOriginalCanvas);
+    let gameplayMaskCanvas = createGameplayMaskFromCleanedCanvas(cleanedOriginalCanvas);
+    removeOuterWhiteFrame(gameplayMaskCanvas);
 
     const asset = {
       original: cleanedOriginalCanvas,
@@ -753,7 +846,7 @@ function getMigratedSkin() {
     }
 
     // Automatically reset removed skins to default 'classic'
-    const removedSkins = ['skin3', 'skin7', 'skin8', 'skin9', 'skin10'];
+    const removedSkins = [];
     if (removedSkins.includes(id)) {
         id = 'classic';
         localStorage.setItem('selectedBottleSkin', JSON.stringify({ id: 'classic', src: 'classic' }));
@@ -823,10 +916,12 @@ function BottleImage({ color, hidden, isSelected = false, className = '' }) {
         const cachedAsset = skinAssetCache[bottleSrc];
         if (cachedAsset && cachedAsset.gameplayMask) {
             renderBottleToCanvas(canvas, cachedAsset.gameplayMask, colorHex, hidden);
+            removeOuterWhiteFrame(canvas);
         } else {
             getSkinAsset(bottleSrc, (asset) => {
                 if (asset && asset.gameplayMask) {
                     renderBottleToCanvas(canvas, asset.gameplayMask, colorHex, hidden);
+                    removeOuterWhiteFrame(canvas);
                 }
             });
         }
@@ -857,10 +952,12 @@ function BottleImage({ color, hidden, isSelected = false, className = '' }) {
                 const cachedAsset = skinAssetCache[bottleSrc];
                 if (cachedAsset && cachedAsset.gameplayMask) {
                     renderBottleToCanvas(canvas, cachedAsset.gameplayMask, newColorHex, hidden);
+                    removeOuterWhiteFrame(canvas);
                 } else {
                     getSkinAsset(bottleSrc, (asset) => {
                         if (asset && asset.gameplayMask) {
                             renderBottleToCanvas(canvas, asset.gameplayMask, newColorHex, hidden);
+                            removeOuterWhiteFrame(canvas);
                         }
                     });
                 }
@@ -962,6 +1059,7 @@ function initSkinsShop(skins) {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.drawImage(asset.original, 0, 0, canvas.width, canvas.height);
 
+                removeOuterWhiteFrame(canvas);
                 img.src = canvas.toDataURL("image/png");
             });
         }
@@ -1421,6 +1519,7 @@ function updateActiveSkinUI(activeSkinId) {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.drawImage(asset.original, 0, 0, canvas.width, canvas.height);
 
+                removeOuterWhiteFrame(canvas);
                 previewImg.src = canvas.toDataURL("image/png");
             });
         }
@@ -1990,10 +2089,12 @@ function createBottleDOM({ color, skinId, hidden, isInteractive, isSelected, ind
         const cachedAsset = skinAssetCache[bottleSrc];
         if (cachedAsset && cachedAsset.gameplayMask) {
             renderBottleToCanvas(canvas, cachedAsset.gameplayMask, colorHex, hidden);
+            removeOuterWhiteFrame(canvas);
         } else {
             getSkinAsset(bottleSrc, (asset) => {
                 if (asset && asset.gameplayMask) {
                     renderBottleToCanvas(canvas, asset.gameplayMask, colorHex, hidden);
+                    removeOuterWhiteFrame(canvas);
                 }
             });
         }
@@ -2022,10 +2123,12 @@ function createBottleDOM({ color, skinId, hidden, isInteractive, isSelected, ind
                 const cachedAsset = skinAssetCache[bottleSrc];
                 if (cachedAsset && cachedAsset.gameplayMask) {
                     renderBottleToCanvas(canvas, cachedAsset.gameplayMask, newColorHex, hidden);
+                    removeOuterWhiteFrame(canvas);
                 } else {
                     getSkinAsset(bottleSrc, (asset) => {
                         if (asset && asset.gameplayMask) {
                             renderBottleToCanvas(canvas, asset.gameplayMask, newColorHex, hidden);
+                            removeOuterWhiteFrame(canvas);
                         }
                     });
                 }
