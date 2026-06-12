@@ -72,3 +72,14 @@ if (fs.existsSync(srcDir)) {
 }
 
 console.log('Build complete!');
+
+// Copy all compiled assets from dist/ to dist/tracker/ for subpath hosting
+const trackerDir = path.join(distDir, 'tracker');
+if (!fs.existsSync(trackerDir)) {
+    fs.mkdirSync(trackerDir, { recursive: true });
+}
+fs.readdirSync(distDir).forEach(item => {
+    if (item === 'tracker') return;
+    copyDir(path.join(distDir, item), path.join(trackerDir, item));
+});
+console.log('Duplicated build folder to dist/tracker/ for subpath hosting');
