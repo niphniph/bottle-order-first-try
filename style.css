@@ -1323,75 +1323,17 @@ button[data-mode="knockout"] {
   height: auto !important;
 }
 
-/* ========================= */
-/* FORCE BACK BUTTON VISIBILITY */
-/* ========================= */
-
+/* ======================================================== */
+/* HIDE LEGACY BACK BUTTONS */
+/* ======================================================== */
 .back-button,
 #back-button,
 button.back-button,
 .header-back,
 .top-back,
-.back-btn {
-  position: relative !important;
-  z-index: 9999 !important;
-  transform: translateY(10px) !important;
-  margin-top: 10px !important;
-  margin-left: 24px !important;
-
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 8px !important;
-
-  padding: 12px 24px !important;
-  border-radius: 16px !important;
-  border: 3px solid #ffd84d !important;
-
-  background: rgba(255, 216, 77, 0.16) !important;
-  color: #ffd84d !important;
-
-  font-size: 20px !important;
-  font-weight: 900 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 1px !important;
-
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-  cursor: pointer !important;
-
-  text-shadow:
-    0 0 6px rgba(255, 216, 77, 0.95),
-    0 0 14px rgba(255, 216, 77, 0.65) !important;
-
-  box-shadow:
-    0 0 10px rgba(255, 216, 77, 0.85),
-    0 0 24px rgba(255, 216, 77, 0.45),
-    0 4px 0 rgba(0, 0, 0, 0.45) !important;
-}
-
-.back-button *,
-#back-button *,
-.header-back *,
-.top-back *,
-.back-btn * {
-  color: #ffd84d !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-/* If the Back button only says BACK, force arrow visually */
-.back-button::before,
-#back-button::before,
-.header-back::before,
-.top-back::before,
-.back-btn::before {
-  content: "←" !important;
-  font-size: 26px !important;
-  line-height: 1 !important;
-  color: #ffd84d !important;
-  margin-right: 8px !important;
+.back-btn,
+.forced-back-button {
+  display: none !important;
 }
 
 /* Header must not cover Back */
@@ -1465,5 +1407,111 @@ button.back-button,
 
 .bottle.skin-image {
   filter: none !important;
+}
+
+/* ======================================================== */
+/* PREMIUM NEON BACK BUTTON & VIEWPORT LAYOUT */
+/* ======================================================== */
+.global-ui-container {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: 100%;
+  max-width: 800px;
+  height: 0;
+  pointer-events: none;
+  z-index: 99999;
+}
+
+.back-button-neon {
+  position: absolute;
+  left: 24px;
+  bottom: 110px; /* Above bottom navigation bar */
+  pointer-events: auto;
+  
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  
+  padding: 12px 24px !important;
+  border-radius: 999px !important; /* Rounded pill shape */
+  border: 3px solid #ff007a !important; /* Neon pink border */
+  background: rgba(255, 0, 122, 0.12) !important;
+  color: #ffffff !important;
+  
+  font-family: 'Fredoka One', cursive, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1.5px !important;
+  
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  
+  box-shadow: 
+    0 0 15px rgba(255, 0, 122, 0.6),
+    0 0 30px rgba(0, 240, 255, 0.35),
+    0 5px 0 rgba(0, 0, 0, 0.45) !important;
+  
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.9) !important;
+  animation: neonPulse 2.5s infinite ease-in-out !important;
+}
+
+.back-button-neon .material-symbols-outlined {
+  font-size: 20px !important;
+  font-weight: 900 !important;
+  color: #ffffff !important;
+}
+
+.back-button-neon:hover {
+  transform: translateY(-2px) scale(1.05) !important;
+  box-shadow: 
+    0 0 25px rgba(255, 0, 122, 0.95),
+    0 0 50px rgba(0, 240, 255, 0.75),
+    inset 0 0 15px rgba(255, 0, 122, 0.5),
+    0 5px 0 rgba(0, 0, 0, 0.45) !important;
+}
+
+.back-button-neon:active {
+  transform: translateY(2px) scale(0.95) !important;
+  box-shadow: 
+    0 0 10px rgba(255, 0, 122, 0.4),
+    0 0 20px rgba(0, 240, 255, 0.2),
+    inset 0 0 5px rgba(255, 0, 122, 0.2),
+    0 2px 0 rgba(0, 0, 0, 0.4) !important;
+}
+
+/* On game screen, bottom nav is hidden, so move button lower to bottom of viewport */
+.global-ui-container.game-mode .back-button-neon {
+  bottom: 24px !important;
+}
+
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 12px rgba(255, 0, 122, 0.55),
+      0 0 25px rgba(0, 240, 255, 0.35),
+      inset 0 0 6px rgba(255, 0, 122, 0.2),
+      0 5px 0 rgba(0, 0, 0, 0.45);
+    border-color: #ff007a !important;
+  }
+  50% {
+    box-shadow: 
+      0 0 22px rgba(255, 0, 122, 0.85),
+      0 0 45px rgba(0, 240, 255, 0.65),
+      inset 0 0 14px rgba(255, 0, 122, 0.45),
+      0 5px 0 rgba(0, 0, 0, 0.45);
+    border-color: #00e5ff !important;
+  }
+}
+
+/* Extra padding at bottom of screens to prevent floating back button overlap */
+#classic-menu,
+#skins-screen,
+#leaderboard-screen,
+#profile-screen {
+  padding-bottom: 210px !important;
 }
 

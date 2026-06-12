@@ -1767,6 +1767,27 @@ function showScreen(screenId) {
     if (screenId === 'main-menu' || screenId === 'classic-menu') {
         updateMainMenuRank();
     }
+
+    // Update global back button visibility and click handler
+    const globalBackBtn = document.getElementById('global-back-btn');
+    const globalUiContainer = document.querySelector('.global-ui-container');
+    if (globalBackBtn && globalUiContainer) {
+        if (screenId === 'main-menu' || screenId === 'splash-screen' || screenId === 'loading-screen') {
+            globalBackBtn.classList.add('hidden');
+            globalUiContainer.classList.add('hidden');
+        } else {
+            globalBackBtn.classList.remove('hidden');
+            globalUiContainer.classList.remove('hidden');
+            
+            if (screenId === 'game-screen') {
+                globalUiContainer.classList.add('game-mode');
+                globalBackBtn.onclick = () => showScreen('classic-menu');
+            } else {
+                globalUiContainer.classList.remove('game-mode');
+                globalBackBtn.onclick = () => showScreen('main-menu');
+            }
+        }
+    }
 }
 
 function updateActiveNavTab(screenId) {

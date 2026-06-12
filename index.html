@@ -1756,7 +1756,6 @@ body {
     <!-- Top Navigation Bar -->
     <header id="app-header" class="fixed top-0 left-0 right-0 z-50 bg-surface/30 backdrop-blur-xl border-b-2 border-primary shadow-[0_4px_20px_0_rgba(189,0,255,0.4)]">
         <div class="flex justify-between items-center w-full px-margin-mobile py-unit max-w-[800px] mx-auto">
-                <button onclick="showScreen('main-menu')" class="back-button">← BACK</button>
                 <span class="font-display-hero text-headline-lg-mobile italic tracking-tighter text-primary drop-shadow-[0_2px_0px_#1a0033] cursor-pointer" onclick="showScreen('main-menu')">BOTTLE ORDER</span>
             <div class="flex items-center gap-4">
                 <!-- Energy Display Header Badge -->
@@ -1859,10 +1858,7 @@ body {
     <!-- Game Screen -->
     <div id="game-screen" class="screen hidden flex-grow flex flex-col items-center justify-center w-full max-w-[900px] px-margin-mobile pt-10 pb-24 !h-auto">
         <div class="w-full flex items-center justify-between mb-4 max-w-[800px]">
-            <button class="flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-variant/50 text-on-surface hover:bg-surface-variant border border-glass-stroke hover:scale-[1.02] active:scale-95 transition-all" onclick="showScreen('classic-menu')">
-                <span class="material-symbols-outlined">arrow_back</span>
-                <span class="font-label-caps tracking-widest">BACK</span>
-            </button>
+            <div class="w-[100px]"></div> <!-- Spacer for centering -->
             <h3 id="game-mode-title" class="font-headline-md text-2xl text-white">Sequence Mode</h3>
             <div class="w-[100px]"></div> <!-- Spacer for centering -->
         </div>
@@ -4852,11 +4848,21 @@ setTimeout(() => {
             </div>
         </div>
     </div>
+
+    <!-- Global Floating UI Container for Premium Neon Back Button -->
+    <div class="global-ui-container">
+        <button id="global-back-btn" class="back-button-neon hidden">
+            <span class="material-symbols-outlined">arrow_back</span>
+            <span>BACK</span>
+        </button>
+    </div>
+
     <script>
     document.addEventListener("DOMContentLoaded", function () {
       const menuButtonsText = ["CLASSIC", "ADVENTURE", "DAILY", "MULTIPLAYER", "KNOCK-OUT"];
 
       document.querySelectorAll("button").forEach((btn) => {
+        if (btn.id === "global-back-btn") return;
         const text = btn.textContent.trim().toUpperCase();
 
         if (menuButtonsText.includes(text)) {
