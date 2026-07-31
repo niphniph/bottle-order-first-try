@@ -1719,8 +1719,18 @@ function confirmResetProgress() {
 }
 
 // --- SPA Navigation ---
-function showScreen(screenId) {
+let screenHistory = [];
+let isPaused = false;
+
+function showScreen(screenId, pushToHistory = true) {
     sound.playClick();
+    
+    if (pushToHistory) {
+        const activeScreen = document.querySelector('.screen.active');
+        if (activeScreen && activeScreen.id !== screenId) {
+            screenHistory.push(activeScreen.id);
+        }
+    }
     
     document.querySelectorAll('.screen').forEach(s => {
         s.classList.remove('active');
@@ -1739,7 +1749,7 @@ function showScreen(screenId) {
         if (screenId === 'game-screen') {
             appHeader.classList.add('hidden');
             appNav.classList.add('hidden');
-        } else if (screenId === 'main-menu' || screenId === 'classic-menu') {
+        } else if (screenId === 'main-menu') {
             appHeader.classList.add('hidden');
             appNav.classList.remove('hidden');
         } else {
@@ -1750,6 +1760,11 @@ function showScreen(screenId) {
     
     if (screenId !== 'game-screen') {
         clearInterval(timerInterval);
+        if (typeof blindTimeout !== 'undefined' && blindTimeout) clearTimeout(blindTimeout);
+        isPlaying = false;
+        isPaused = false;
+        const pauseModal = document.getElementById('pause-modal');
+        if (pauseModal) pauseModal.classList.add('hidden');
     }
 
     updateActiveNavTab(screenId);
@@ -1759,7 +1774,7 @@ function showScreen(screenId) {
     } else if (screenId === 'leaderboard-screen') {
         const activeSkinName = (SKINS_METADATA && SKINS_METADATA[currentSkin]) ? SKINS_METADATA[currentSkin].name : 'Shaker';
         document.getElementById('leaderboard-active-skin-name').textContent = activeSkinName;
-        document.getElementById('leaderboard-player-level-stats').innerHTML = `Lvl ${currentLevel} â€¢ --s`;
+        document.getElementById('leaderboard-player-level-stats').innerHTML = `Lvl ${currentLevel} &bull; --s`;
     } else if (screenId === 'skins-screen') {
         updateActiveSkinUI(currentSkin);
     }
@@ -1767,28 +1782,75 @@ function showScreen(screenId) {
     if (screenId === 'main-menu' || screenId === 'classic-menu') {
         updateMainMenuRank();
     }
+}
 
-    // Update global back button visibility and click handler
-    const globalBackBtn = document.getElementById('global-back-btn');
-    const globalUiContainer = document.querySelector('.global-ui-container');
-    if (globalBackBtn && globalUiContainer) {
-        if (screenId === 'main-menu' || screenId === 'splash-screen' || screenId === 'loading-screen') {
-            globalBackBtn.classList.add('hidden');
-            globalUiContainer.classList.add('hidden');
-        } else {
-            globalBackBtn.classList.remove('hidden');
-            globalUiContainer.classList.remove('hidden');
-            
-            if (screenId === 'game-screen') {
-                globalUiContainer.classList.add('game-mode');
-                globalBackBtn.onclick = () => showScreen('classic-menu');
-            } else {
-                globalUiContainer.classList.remove('game-mode');
-                globalBackBtn.onclick = () => showScreen('main-menu');
-            }
-        }
+function goBack() {
+    if (screenHistory.length > 0) {
+        const prevScreen = screenHistory.pop();
+        showScreen(prevScreen, false);
+    } else {
+        showScreen('main-menu', false);
     }
 }
+
+function pauseGame() {
+    if (!isPlaying || isPaused) return;
+    sound.playClick();
+    isPaused = true;
+    clearInterval(timerInterval);
+    const pauseModal = document.getElementById('pause-modal');
+    if (pauseModal) pauseModal.classList.remove('hidden');
+}
+
+function resumeGame() {
+    if (!isPaused) return;
+    sound.playClick();
+    isPaused = false;
+    const pauseModal = document.getElementById('pause-modal');
+    if (pauseModal) pauseModal.classList.add('hidden');
+    
+    if (currentMode === 'time-attack' || currentMode === 'knockout' || currentMode === 'daily') {
+        startTimeAttackTimer();
+    } else {
+        startNormalTimer();
+    }
+}
+
+function exitGameFromPause() {
+    isPaused = false;
+    const pauseModal = document.getElementById('pause-modal');
+    if (pauseModal) pauseModal.classList.add('hidden');
+    
+    clearInterval(timerInterval);
+    if (typeof blindTimeout !== 'undefined' && blindTimeout) clearTimeout(blindTimeout);
+    isPlaying = false;
+    
+    showScreen('classic-menu', false);
+}
+
+class BackButton_Neon extends HTMLElement {
+    constructor() {
+        super();
+    }
+    connectedCallback() {
+        const customClick = this.getAttribute('onclick');
+        this.innerHTML = `
+            <button class="back-button-neon">←</button>
+        `;
+        const btn = this.querySelector('button');
+        btn.addEventListener('click', (e) => {
+            sound.playClick();
+            if (this.onclick) {
+                this.onclick(e);
+            } else if (customClick) {
+                new Function(customClick).call(this);
+            } else {
+                goBack();
+            }
+        });
+    }
+}
+customElements.define('back-button-neon', BackButton_Neon);
 
 function updateActiveNavTab(screenId) {
     const navMapping = {

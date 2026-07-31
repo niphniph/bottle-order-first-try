@@ -544,7 +544,7 @@ body {
 .level-container {
     position: absolute;
     top: 20px;
-    left: 20px;
+    left: 170px;
     background-color: var(--outline-color);
     color: white;
     padding: 5px 15px;
@@ -1500,7 +1500,7 @@ body {
   margin: 0 auto;
   height: calc(100vh - 80px); /* Height minus bottom navigation */
   overflow-y: auto;
-  padding: 32px 24px 120px;
+  padding: 16px 24px 190px;
   box-sizing: border-box;
   background: transparent;
   display: flex;
@@ -1516,7 +1516,8 @@ body {
 }
 
 .game-title {
-  margin-top: clamp(20px, 4vh, 40px);
+  margin-top: clamp(5px, 1.5vh, 15px);
+  margin-bottom: clamp(10px, 2vh, 25px);
   text-align: center;
   font-weight: 900;
   display: flex;
@@ -1568,21 +1569,21 @@ body {
 }
 
 .menu-buttons {
-  margin-top: clamp(30px, 5vh, 45px) !important;
+  margin-top: clamp(15px, 2.5vh, 25px) !important;
   display: flex;
   flex-direction: column;
-  gap: clamp(28px, 4vh, 40px) !important;
-  width: min(420px, 85vw) !important;
+  gap: clamp(12px, 1.8vh, 16px) !important;
+  width: min(390px, 85vw) !important;
   z-index: 2;
 }
 
 .mode-btn {
-  height: clamp(112px, 15vh, 136px) !important;
+  height: 72px !important;
   flex-shrink: 0 !important; /* Prevent shrinking in scroll container */
-  border-radius: 14px !important;
+  border-radius: 18px !important;
   border: 3px solid white !important;
   color: white !important;
-  font-size: clamp(36px, 5vh, 44px) !important;
+  font-size: 24px !important;
   font-weight: 900 !important;
   cursor: pointer;
   box-shadow: 0 5px 0 #1a0033, 0 8px 15px rgba(0,0,0,0.3) !important;
@@ -1628,7 +1629,7 @@ body {
   margin-top: 24px;
   margin-bottom: 20px;
   flex-shrink: 0 !important;
-  width: min(420px, 85vw) !important;
+  width: min(390px, 85vw) !important;
   z-index: 2;
 }
 
@@ -1653,7 +1654,7 @@ body {
   margin: 0 auto;
   height: calc(100vh - 80px); /* Height minus bottom navigation */
   overflow-y: auto;
-  padding: 32px 24px 120px;
+  padding: 16px 24px 190px;
   box-sizing: border-box;
   background: transparent;
   display: flex;
@@ -1663,8 +1664,8 @@ body {
 
 .classic-title-block {
   text-align: center;
-  margin-top: clamp(20px, 4vh, 40px);
-  margin-bottom: 24px;
+  margin-top: clamp(5px, 1.5vh, 15px);
+  margin-bottom: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1697,11 +1698,11 @@ body {
 }
 
 .classic-mode-buttons {
-  margin-top: clamp(20px, 3vh, 30px) !important;
+  margin-top: clamp(15px, 2.5vh, 25px) !important;
   display: flex;
   flex-direction: column;
-  gap: clamp(14px, 2vh, 20px) !important;
-  width: min(420px, 85vw) !important;
+  gap: clamp(12px, 1.8vh, 16px) !important;
+  width: min(390px, 85vw) !important;
   z-index: 2;
 }
 
@@ -1726,7 +1727,7 @@ body {
   margin-top: 24px;
   margin-bottom: 20px;
   flex-shrink: 0 !important;
-  width: min(420px, 85vw) !important;
+  width: min(390px, 85vw) !important;
   z-index: 2;
 }
 
@@ -1748,6 +1749,112 @@ body {
 
 .bottle.skin-image {
   filter: none !important;
+}
+
+/* ======================================================== */
+/* PREMIUM NEON BACK BUTTON & VIEWPORT LAYOUT */
+/* ======================================================== */
+.back-button-neon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 50% !important; /* Circular shape */
+  padding: 0 !important;
+  border: 3px solid #ff007a !important; /* Neon pink border */
+  background: rgba(255, 0, 122, 0.12) !important;
+  color: #ffffff !important;
+  
+  font-family: 'Fredoka One', cursive, sans-serif !important;
+  font-size: 30px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  
+  box-shadow: 
+    0 0 12px rgba(255, 0, 122, 0.6),
+    0 0 24px rgba(0, 240, 255, 0.35),
+    0 4px 0 rgba(0, 0, 0, 0.45) !important;
+  
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.9) !important;
+  animation: neonPulse 2.5s infinite ease-in-out !important;
+  pointer-events: auto;
+}
+
+.back-button-neon .material-symbols-outlined {
+  display: none !important; /* Hide material icons inside */
+}
+
+.back-button-neon:hover {
+  transform: scale(1.08) !important;
+  box-shadow: 
+    0 0 20px rgba(255, 0, 122, 0.95),
+    0 0 40px rgba(0, 240, 255, 0.75),
+    inset 0 0 10px rgba(255, 0, 122, 0.5),
+    0 4px 0 rgba(0, 0, 0, 0.45) !important;
+}
+
+.back-button-neon:active {
+  transform: scale(0.95) !important;
+  box-shadow: 
+    0 0 8px rgba(255, 0, 122, 0.4),
+    0 0 16px rgba(0, 240, 255, 0.2),
+    inset 0 0 5px rgba(255, 0, 122, 0.2),
+    0 2px 0 rgba(0, 0, 0, 0.4) !important;
+}
+
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 10px rgba(255, 0, 122, 0.55),
+      0 0 20px rgba(0, 240, 255, 0.35),
+      inset 0 0 4px rgba(255, 0, 122, 0.2),
+      0 4px 0 rgba(0, 0, 0, 0.45);
+    border-color: #ff007a !important;
+  }
+  50% {
+    box-shadow: 
+      0 0 18px rgba(255, 0, 122, 0.85),
+      0 0 35px rgba(0, 240, 255, 0.65),
+      inset 0 0 10px rgba(255, 0, 122, 0.45),
+      0 4px 0 rgba(0, 0, 0, 0.45);
+    border-color: #00e5ff !important;
+  }
+}
+
+/* Screen layout specific positions */
+.screen-back-btn {
+  position: absolute !important;
+  top: 90px !important;
+  left: 24px !important;
+  z-index: 50 !important;
+}
+
+.game-back-btn {
+  position: absolute !important;
+  top: 20px !important;
+  left: 20px !important;
+  z-index: 50 !important;
+}
+
+/* Pause button next to the timer */
+.game-pause-btn {
+  position: absolute !important;
+  top: 20px !important;
+  right: 155px !important;
+  z-index: 50 !important;
+}
+
+/* Extra padding at bottom of screens to prevent floating back button overlap */
+#classic-menu,
+#skins-screen,
+#leaderboard-screen,
+#profile-screen {
+  padding-bottom: 210px !important;
 }
     </style>
 </head>
@@ -1825,6 +1932,7 @@ body {
 
     <!-- Classic Modes Menu Screen -->
     <div id="classic-menu" class="screen hidden classic-modes-screen">
+        <back-button-neon class="screen-back-btn"></back-button-neon>
         <div class="classic-modes-content custom-scrollbar">
             <div class="game-title">
                 <div class="title-bottle select-none">BOTTLE</div>
@@ -1866,6 +1974,12 @@ body {
         <div class="game-wrapper">
         <div class="game-container">
             <!-- Phone Frame Content -->
+            <back-button-neon class="game-back-btn"></back-button-neon>
+            
+            <button id="pause-btn" onclick="pauseGame()" class="game-pause-btn flex items-center justify-center w-[36px] h-[36px] rounded-full border-2 border-primary bg-primary/10 text-primary shadow-[0_0_10px_rgba(189,0,255,0.4)] hover:scale-105 active:scale-95 transition-all">
+                <span class="material-symbols-outlined text-[18px]">pause</span>
+            </button>
+
             <div class="level-container">
                 <span class="level-text font-label-caps">LEVEL: <span id="level-display" class="font-bold">1</span></span>
             </div>
@@ -1913,6 +2027,7 @@ body {
 
     <!-- Skins Selection Shop Screen -->
     <div id="skins-screen" class="screen hidden flex-grow flex flex-col items-center justify-start w-full max-w-[600px] px-margin-mobile pt-20 pb-36 space-y-8">
+        <back-button-neon class="screen-back-btn"></back-button-neon>
         <!-- Screen Title -->
         <div class="text-center mb-6">
             <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary tracking-widest uppercase drop-shadow-[0_0_10px_rgba(236,178,255,0.4)]">SELECT SKIN</h2>
@@ -1941,16 +2056,13 @@ body {
 
         <!-- Action Section -->
         <div class="mt-8 flex flex-col gap-4 items-center w-full pb-8">
-            <button onclick="showScreen('main-menu')" class="w-full py-4 px-8 rounded-full border-2 border-hot-pink bg-hot-pink/10 text-hot-pink font-label-caps text-label-caps tracking-[0.2em] shadow-[0_0_15px_rgba(255,0,122,0.4)] active:scale-95 hover:bg-hot-pink hover:text-background transition-all group flex items-center justify-center gap-2">
-                <span class="material-symbols-outlined group-hover:rotate-90 transition-transform">close</span>
-                CLOSE SHOP
-            </button>
             <p class="font-body-md text-on-surface-variant/60 text-center text-xs px-8">Changes are applied immediately to your active game character profile.</p>
         </div>
     </div>
 
     <!-- Leaderboard Screen -->
     <div id="leaderboard-screen" class="screen hidden flex-grow flex flex-col items-center justify-start w-full max-w-[600px] px-margin-mobile pt-20 pb-36 space-y-6">
+        <back-button-neon class="screen-back-btn"></back-button-neon>
         <!-- Screen Title -->
         <div class="text-center mb-4">
             <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-secondary tracking-widest uppercase drop-shadow-[0_0_10px_rgba(0,240,255,0.4)]">ARCADE LEADERBOARD</h2>
@@ -2062,6 +2174,7 @@ body {
 
     <!-- Profile Screen -->
     <div id="profile-screen" class="screen hidden flex-grow flex flex-col items-center justify-start w-full max-w-[600px] px-margin-mobile pt-20 pb-36 space-y-6">
+        <back-button-neon class="screen-back-btn"></back-button-neon>
         <!-- Screen Title -->
         <div class="text-center mb-4">
             <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-tertiary tracking-widest uppercase drop-shadow-[0_0_10px_rgba(171,214,0,0.4)]">PLAYER PROFILE</h2>
@@ -2233,6 +2346,23 @@ body {
                 <button onclick="confirmResetProgress()" class="w-full py-3 bg-error/10 hover:bg-error hover:text-background border-2 border-error/30 text-error font-label-caps text-xs tracking-wider rounded-lg transition-all active:scale-95">
                     RESET GAME DATA
                 </button>
+                
+                <back-button-neon onclick="closeSettings()" style="display: flex; justify-content: center; margin-top: 10px;"></back-button-neon>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pause Modal Panel -->
+    <div id="pause-modal" class="modal hidden fixed inset-0 z-[250] flex items-center justify-center bg-black/80 backdrop-blur-md">
+        <div class="glass-card rounded-lg p-8 max-w-[90%] w-[350px] border border-primary/40 shadow-[0_0_30px_rgba(189,0,255,0.3)] flex flex-col items-center gap-6">
+            <h3 class="font-headline-md text-primary tracking-wide text-2xl animate-pulse">GAME PAUSED</h3>
+            <div class="flex flex-col gap-4 w-full">
+                <!-- Resume Button -->
+                <button onclick="resumeGame()" class="w-full py-3 rounded-xl bg-secondary text-slate-950 font-bold text-lg hover:bg-secondary-fixed hover:scale-[1.02] active:scale-95 transition-all shadow-[0_0_15px_rgba(0,240,255,0.4)]">
+                    RESUME
+                </button>
+                <!-- Neon Back Button -->
+                <back-button-neon id="pause-back-btn" onclick="exitGameFromPause()" style="display: flex; justify-content: center;"></back-button-neon>
             </div>
         </div>
     </div>
@@ -3832,8 +3962,18 @@ function confirmResetProgress() {
 }
 
 // --- SPA Navigation ---
-function showScreen(screenId) {
+let screenHistory = [];
+let isPaused = false;
+
+function showScreen(screenId, pushToHistory = true) {
     sound.playClick();
+    
+    if (pushToHistory) {
+        const activeScreen = document.querySelector('.screen.active');
+        if (activeScreen && activeScreen.id !== screenId) {
+            screenHistory.push(activeScreen.id);
+        }
+    }
     
     document.querySelectorAll('.screen').forEach(s => {
         s.classList.remove('active');
@@ -3863,6 +4003,11 @@ function showScreen(screenId) {
     
     if (screenId !== 'game-screen') {
         clearInterval(timerInterval);
+        if (typeof blindTimeout !== 'undefined' && blindTimeout) clearTimeout(blindTimeout);
+        isPlaying = false;
+        isPaused = false;
+        const pauseModal = document.getElementById('pause-modal');
+        if (pauseModal) pauseModal.classList.add('hidden');
     }
 
     updateActiveNavTab(screenId);
@@ -3872,11 +4017,79 @@ function showScreen(screenId) {
     } else if (screenId === 'leaderboard-screen') {
         const activeSkinName = (SKINS_METADATA && SKINS_METADATA[currentSkin]) ? SKINS_METADATA[currentSkin].name : 'Shaker';
         document.getElementById('leaderboard-active-skin-name').textContent = activeSkinName;
-        document.getElementById('leaderboard-player-level-stats').innerHTML = `Lvl ${currentLevel} • --s`;
+        document.getElementById('leaderboard-player-level-stats').innerHTML = `Lvl ${currentLevel} &bull; --s`;
     } else if (screenId === 'skins-screen') {
         updateActiveSkinUI(currentSkin);
     }
 }
+
+function goBack() {
+    if (screenHistory.length > 0) {
+        const prevScreen = screenHistory.pop();
+        showScreen(prevScreen, false);
+    } else {
+        showScreen('main-menu', false);
+    }
+}
+
+function pauseGame() {
+    if (!isPlaying || isPaused) return;
+    sound.playClick();
+    isPaused = true;
+    clearInterval(timerInterval);
+    const pauseModal = document.getElementById('pause-modal');
+    if (pauseModal) pauseModal.classList.remove('hidden');
+}
+
+function resumeGame() {
+    if (!isPaused) return;
+    sound.playClick();
+    isPaused = false;
+    const pauseModal = document.getElementById('pause-modal');
+    if (pauseModal) pauseModal.classList.add('hidden');
+    
+    if (currentMode === 'time-attack' || currentMode === 'knockout' || currentMode === 'daily') {
+        startTimeAttackTimer();
+    } else {
+        startNormalTimer();
+    }
+}
+
+function exitGameFromPause() {
+    isPaused = false;
+    const pauseModal = document.getElementById('pause-modal');
+    if (pauseModal) pauseModal.classList.add('hidden');
+    
+    clearInterval(timerInterval);
+    if (typeof blindTimeout !== 'undefined' && blindTimeout) clearTimeout(blindTimeout);
+    isPlaying = false;
+    
+    showScreen('classic-menu', false);
+}
+
+class BackButton_Neon extends HTMLElement {
+    constructor() {
+        super();
+    }
+    connectedCallback() {
+        const customClick = this.getAttribute('onclick');
+        this.innerHTML = `
+            <button class="back-button-neon">←</button>
+        `;
+        const btn = this.querySelector('button');
+        btn.addEventListener('click', (e) => {
+            sound.playClick();
+            if (this.onclick) {
+                this.onclick(e);
+            } else if (customClick) {
+                new Function(customClick).call(this);
+            } else {
+                goBack();
+            }
+        });
+    }
+}
+customElements.define('back-button-neon', BackButton_Neon);
 
 function updateActiveNavTab(screenId) {
     const navMapping = {
@@ -4849,13 +5062,7 @@ setTimeout(() => {
         </div>
     </div>
 
-    <!-- Global Floating UI Container for Premium Neon Back Button -->
-    <div class="global-ui-container">
-        <button id="global-back-btn" class="back-button-neon hidden">
-            <span class="material-symbols-outlined">arrow_back</span>
-            <span>BACK</span>
-        </button>
-    </div>
+
 
     <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -4869,11 +5076,9 @@ setTimeout(() => {
           btn.classList.add("forced-main-menu-button");
         }
 
-        if (text === "BACK" || text === "← BACK") {
+        if (text === "BACK" || text === "← BACK" || text === "←") {
           btn.classList.add("forced-back-button");
-          if (!btn.textContent.includes("←")) {
-            btn.textContent = "← BACK";
-          }
+          btn.textContent = "←";
         }
       });
     });
