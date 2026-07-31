@@ -2037,8 +2037,46 @@ body {
   display: none !important;
 }
 
+.menu-back-to-main-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 10px 18px !important;
+  min-height: 48px !important;
+  border-radius: 14px !important;
+  border: 3px solid #ffffff !important;
+  background: #2b0754 !important;
+  color: #ffffff !important;
+  font-family: 'Fredoka One', cursive, sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 15px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  cursor: pointer !important;
+  touch-action: manipulation !important;
+  box-shadow: 0 4px 0 #120024, 0 6px 14px rgba(0, 0, 0, 0.4) !important;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  user-select: none !important;
+  white-space: nowrap !important;
+  z-index: 999999 !important;
+  pointer-events: auto !important;
+}
+
+.menu-back-to-main-btn:hover {
+  transform: translateY(-2px) scale(1.03) !important;
+  background: #380a6b !important;
+  box-shadow: 0 6px 0 #120024, 0 9px 18px rgba(0, 0, 0, 0.5) !important;
+}
+
+.menu-back-to-main-btn:active {
+  transform: translateY(2px) scale(0.97) !important;
+  box-shadow: 0 2px 0 #120024, 0 3px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
 @media (max-width: 640px) {
-  .global-back-menu-button {
+  .global-back-menu-button,
+  .menu-back-to-main-btn {
     padding: 8px 14px !important;
     font-size: 13px !important;
     min-height: 44px !important;
@@ -2137,6 +2175,11 @@ body {
 
     <!-- Classic Modes Menu Screen -->
     <div id="classic-menu" class="screen hidden classic-modes-screen">
+        <div class="w-full flex justify-start p-4 max-w-[800px] mx-auto relative z-[99999]">
+            <button type="button" onclick="handleGlobalBackToMenu(event)" class="menu-back-to-main-btn">
+                ← BACK TO MENU
+            </button>
+        </div>
 
         <div class="classic-modes-content custom-scrollbar">
             <div class="game-title">
@@ -2170,8 +2213,12 @@ body {
 
     <!-- Game Screen -->
     <div id="game-screen" class="screen hidden flex-grow flex flex-col items-center justify-center w-full max-w-[900px] px-margin-mobile pt-10 pb-24 !h-auto">
-        <div class="w-full flex items-center justify-center mb-4 max-w-[800px]">
-            <h3 id="game-mode-title" class="font-headline-md text-2xl text-white text-center">Sequence Mode</h3>
+        <div class="w-full flex items-center justify-between mb-4 max-w-[800px] relative z-[99999]">
+            <button type="button" onclick="handleGlobalBackToMenu(event)" class="menu-back-to-main-btn">
+                ← BACK TO MENU
+            </button>
+            <h3 id="game-mode-title" class="font-headline-md text-2xl text-white text-center flex-1">Sequence Mode</h3>
+            <div class="w-[160px] hidden sm:block"></div>
         </div>
         
         <div class="game-wrapper">
@@ -2228,7 +2275,12 @@ body {
     </div>
 
     <!-- Skins Selection Shop Screen -->
-    <div id="skins-screen" class="screen hidden flex-grow flex flex-col items-center justify-start w-full max-w-[600px] px-margin-mobile pt-20 pb-36 space-y-8">
+    <div id="skins-screen" class="screen hidden flex-grow flex flex-col items-center justify-start w-full max-w-[600px] px-margin-mobile pt-10 pb-36 space-y-8">
+        <div class="w-full flex justify-start max-w-[600px] relative z-[99999]">
+            <button type="button" onclick="handleGlobalBackToMenu(event)" class="menu-back-to-main-btn">
+                ← BACK TO MENU
+            </button>
+        </div>
 
         <!-- Screen Title -->
         <div class="text-center mb-6">
@@ -2263,7 +2315,12 @@ body {
     </div>
 
     <!-- Leaderboard Screen -->
-    <div id="leaderboard-screen" class="screen hidden flex-grow flex flex-col items-center justify-start w-full max-w-[600px] px-margin-mobile pt-20 pb-36 space-y-6">
+    <div id="leaderboard-screen" class="screen hidden flex-grow flex flex-col items-center justify-start w-full max-w-[600px] px-margin-mobile pt-10 pb-36 space-y-6">
+        <div class="w-full flex justify-start max-w-[600px] relative z-[99999]">
+            <button type="button" onclick="handleGlobalBackToMenu(event)" class="menu-back-to-main-btn">
+                ← BACK TO MENU
+            </button>
+        </div>
 
         <!-- Screen Title -->
         <div class="text-center mb-4">
@@ -2375,7 +2432,13 @@ body {
     </div>
 
     <!-- Profile Screen -->
-    <div id="profile-screen" class="screen hidden flex-grow flex flex-col items-center justify-start w-full max-w-[600px] px-margin-mobile pt-20 pb-36 space-y-6">
+    <div id="profile-screen" class="screen hidden flex-grow flex flex-col items-center justify-start w-full max-w-[600px] px-margin-mobile pt-10 pb-36 space-y-6">
+        <div class="w-full flex justify-start max-w-[600px] relative z-[99999]">
+            <button type="button" onclick="handleGlobalBackToMenu(event)" class="menu-back-to-main-btn">
+                ← BACK TO MENU
+            </button>
+        </div>
+
         <!-- Screen Title -->
         <div class="text-center mb-4">
             <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-tertiary tracking-widest uppercase drop-shadow-[0_0_10px_rgba(171,214,0,0.4)]">PLAYER PROFILE</h2>
