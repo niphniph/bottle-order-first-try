@@ -1828,20 +1828,68 @@ function exitGameFromPause() {
     showScreen('classic-menu', false);
 }
 
-class BackButton_Neon extends HTMLElement {
+function returnToMainMenu() {
+    if (typeof sound !== 'undefined' && typeof sound.playClick === 'function') {
+        sound.playClick();
+    }
+    
+    // Stop all game timers
+    if (typeof timerInterval !== 'undefined' && timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+    if (typeof blindTimeout !== 'undefined' && blindTimeout) {
+        clearTimeout(blindTimeout);
+        blindTimeout = null;
+    }
+    
+    // Reset gameplay state
+    if (typeof isPlaying !== 'undefined') isPlaying = false;
+    if (typeof isPaused !== 'undefined') isPaused = false;
+    if (typeof selectedBottle !== 'undefined') selectedBottle = null;
+    if (typeof firstSelected !== 'undefined') firstSelected = null;
+    if (typeof isDragging !== 'undefined') isDragging = false;
+    
+    // Clean up DOM bottle states and animations
+    document.querySelectorAll('.bottle-slot').forEach(el => {
+        el.classList.remove('selected', 'dragging', 'hover-target', 'swapping', 'settling');
+        el.style.transform = '';
+    });
+    
+    // Hide active game overlays
+    const pauseModal = document.getElementById('pause-modal');
+    if (pauseModal) pauseModal.classList.add('hidden');
+    const gameOverModal = document.getElementById('game-over-modal');
+    if (gameOverModal) gameOverModal.classList.add('hidden');
+    const winModal = document.getElementById('win-modal');
+    if (winModal) winModal.classList.add('hidden');
+    
+    // Determine target mode-selection menu
+    const targetMenu = (typeof currentMode !== 'undefined' && (currentMode === 'sequence' || currentMode === 'time-attack' || currentMode === 'blind'))
+        ? 'classic-menu'
+        : 'main-menu';
+        
+    showScreen(targetMenu, false);
+}
+
+class BackToMenuButton extends HTMLElement {
     constructor() {
         super();
     }
     connectedCallback() {
         const customClick = this.getAttribute('onclick');
         this.innerHTML = `
-            <button class="back-button-neon">←</button>
+            <button class="back-to-menu-btn" aria-label="Back to Menu">
+                <span class="back-arrow">←</span>
+                <span class="back-text">BACK TO MENU</span>
+            </button>
         `;
         const btn = this.querySelector('button');
         btn.addEventListener('click', (e) => {
-            sound.playClick();
-            if (this.onclick) {
-                this.onclick(e);
+            e.preventDefault();
+            const activeScreen = document.querySelector('.screen.active');
+            if (activeScreen && activeScreen.id === 'game-screen') {
+                returnToMainMenu();
             } else if (customClick) {
                 new Function(customClick).call(this);
             } else {
@@ -1850,7 +1898,13 @@ class BackButton_Neon extends HTMLElement {
         });
     }
 }
-customElements.define('back-button-neon', BackButton_Neon);
+
+if (!customElements.get('back-to-menu-button')) {
+    customElements.define('back-to-menu-button', BackToMenuButton);
+}
+if (!customElements.get('back-button-neon')) {
+    customElements.define('back-button-neon', class extends BackToMenuButton {});
+}
 
 function updateActiveNavTab(screenId) {
     const navMapping = {

@@ -1492,15 +1492,15 @@ button.back-button,
 /* Screen layout specific positions */
 .screen-back-btn {
   position: absolute !important;
-  top: 90px !important;
+  top: 85px !important;
   left: 24px !important;
   z-index: 50 !important;
 }
 
 .game-back-btn {
   position: absolute !important;
-  top: 20px !important;
-  left: 20px !important;
+  top: 15px !important;
+  left: 15px !important;
   z-index: 50 !important;
 }
 
@@ -1519,4 +1519,84 @@ button.back-button,
 #profile-screen {
   padding-bottom: 120px !important;
 }
+
+/* ======================================================== */
+/* REUSABLE ARCADE BACK TO MENU BUTTON */
+/* ======================================================== */
+.back-to-menu-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 8px 18px !important;
+  min-height: 48px !important; /* Mobile & desktop touch target */
+  border-radius: 14px !important;
+  border: 3px solid #ffffff !important;
+  background: #231238 !important; /* Arcade dark-purple */
+  color: #ffffff !important;
+  font-family: 'Fredoka One', cursive, sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 0 #120024, 0 6px 12px rgba(0, 0, 0, 0.35) !important;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  user-select: none !important;
+  pointer-events: auto !important;
+  white-space: nowrap !important;
+}
+
+.back-to-menu-btn:hover {
+  transform: translateY(-2px) scale(1.02) !important;
+  background: #2e184a !important;
+  box-shadow: 0 6px 0 #120024, 0 9px 18px rgba(0, 0, 0, 0.45) !important;
+}
+
+.back-to-menu-btn:active {
+  transform: translateY(2px) scale(0.97) !important;
+  box-shadow: 0 2px 0 #120024, 0 3px 6px rgba(0, 0, 0, 0.25) !important;
+}
+
+.back-to-menu-btn:focus-visible {
+  outline: 3px solid #00e5ff !important;
+  outline-offset: 3px !important;
+}
+
+.back-to-menu-btn .back-arrow {
+  font-size: 18px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+}
+
+/* Level label position next to back button in game container */
+.game-container .level-container {
+  left: 215px !important;
+  top: 18px !important;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 640px) {
+  .back-to-menu-btn {
+    padding: 6px 14px !important;
+    font-size: 13px !important;
+    min-height: 48px !important;
+  }
+  
+  .screen-back-btn {
+    top: 75px !important;
+    left: 16px !important;
+  }
+  
+  .game-back-btn {
+    top: 12px !important;
+    left: 12px !important;
+  }
+
+  .game-container .level-container {
+    left: 190px !important;
+    top: 15px !important;
+  }
+}
+
 
