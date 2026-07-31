@@ -4319,16 +4319,90 @@ function resumeGame() {
     }
 }
 
+window.handleGlobalBackToMenu = function(e) {
+    if (e) {
+        if (typeof e.preventDefault === 'function') e.preventDefault();
+        if (typeof e.stopPropagation === 'function') e.stopPropagation();
+    }
+    console.log('BACK BUTTON CLICK DETECTED');
+    console.log('GLOBAL BACK TO MENU CLICKED');
+
+    try {
+        if (typeof sound !== 'undefined' && typeof sound.playClick === 'function') {
+            sound.playClick();
+        }
+    } catch(err) {}
+
+    // Stop and clear all timers and intervals
+    if (typeof timerInterval !== 'undefined' && timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+    if (typeof blindTimeout !== 'undefined' && blindTimeout) {
+        clearTimeout(blindTimeout);
+        blindTimeout = null;
+    }
+
+    // Reset gameplay state
+    if (typeof isPlaying !== 'undefined') isPlaying = false;
+    if (typeof isPaused !== 'undefined') isPaused = false;
+    if (typeof selectedBottle !== 'undefined') selectedBottle = null;
+    if (typeof firstSelected !== 'undefined') firstSelected = null;
+    if (typeof isDragging !== 'undefined') isDragging = false;
+    if (document.body) document.body.classList.remove('drag-active');
+
+    // Reset bottle slots visual state
+    try {
+        document.querySelectorAll('.bottle-slot').forEach(el => {
+            el.classList.remove('selected', 'dragging', 'hover-target', 'swapping', 'settling');
+            el.style.transform = '';
+        });
+    } catch(err) {}
+
+    // Hide active overlays and modals
+    ['pause-modal', 'game-over-modal', 'win-modal', 'settings-modal', 'out-of-energy-modal', 'ad-overlay', 'coming-soon-modal', 'multiplayer-intermission-modal', 'multiplayer-results-modal'].forEach(id => {
+        const modal = document.getElementById(id);
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+        }
+    });
+
+    // Directly toggle DOM elements to show #main-menu
+    document.querySelectorAll('.screen').forEach(s => {
+        s.classList.remove('active');
+        s.classList.add('hidden');
+    });
+
+    const mainMenu = document.getElementById('main-menu');
+    if (mainMenu) {
+        mainMenu.classList.remove('hidden');
+        mainMenu.classList.add('active');
+    }
+
+    const appHeader = document.getElementById('app-header');
+    const appNav = document.getElementById('app-nav');
+    if (appHeader) appHeader.classList.add('hidden');
+    if (appNav) appNav.classList.remove('hidden');
+
+    const globalBackBtn = document.getElementById('global-back-menu-button');
+    if (globalBackBtn) {
+        globalBackBtn.classList.add('hidden');
+        globalBackBtn.style.display = 'none';
+    }
+
+    try {
+        if (typeof showScreen === 'function') showScreen('main-menu', false);
+    } catch(err) {}
+};
+
+window.handleBackToMenu = window.handleGlobalBackToMenu;
+window.handleBrandNewBackToMenu = window.handleGlobalBackToMenu;
+window.returnToMainMenu = window.handleGlobalBackToMenu;
+window.goBack = window.handleGlobalBackToMenu;
+
 function exitGameFromPause() {
-    isPaused = false;
-    const pauseModal = document.getElementById('pause-modal');
-    if (pauseModal) pauseModal.classList.add('hidden');
-    
-    clearInterval(timerInterval);
-    if (typeof blindTimeout !== 'undefined' && blindTimeout) clearTimeout(blindTimeout);
-    isPlaying = false;
-    
-    showScreen('classic-menu', false);
+    window.handleGlobalBackToMenu();
 }
 
 class BackButton_Neon extends HTMLElement {

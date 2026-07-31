@@ -1850,9 +1850,7 @@ window.handleGlobalBackToMenu = function(e) {
         if (typeof sound !== 'undefined' && typeof sound.playClick === 'function') {
             sound.playClick();
         }
-    } catch(err) {
-        console.warn('Sound effect warning:', err);
-    }
+    } catch(err) {}
 
     // Stop and clear all timers and intervals
     if (typeof timerInterval !== 'undefined' && timerInterval) {
@@ -1870,6 +1868,7 @@ window.handleGlobalBackToMenu = function(e) {
     if (typeof selectedBottle !== 'undefined') selectedBottle = null;
     if (typeof firstSelected !== 'undefined') firstSelected = null;
     if (typeof isDragging !== 'undefined') isDragging = false;
+    if (document.body) document.body.classList.remove('drag-active');
 
     // Reset bottle slots visual state
     try {
@@ -1888,13 +1887,38 @@ window.handleGlobalBackToMenu = function(e) {
         }
     });
 
-    // Always navigate directly to main-menu
-    showScreen('main-menu', false);
+    // Directly toggle DOM elements to show #main-menu
+    document.querySelectorAll('.screen').forEach(s => {
+        s.classList.remove('active');
+        s.classList.add('hidden');
+    });
+
+    const mainMenu = document.getElementById('main-menu');
+    if (mainMenu) {
+        mainMenu.classList.remove('hidden');
+        mainMenu.classList.add('active');
+    }
+
+    const appHeader = document.getElementById('app-header');
+    const appNav = document.getElementById('app-nav');
+    if (appHeader) appHeader.classList.add('hidden');
+    if (appNav) appNav.classList.remove('hidden');
+
+    const globalBackBtn = document.getElementById('global-back-menu-button');
+    if (globalBackBtn) {
+        globalBackBtn.classList.add('hidden');
+        globalBackBtn.style.display = 'none';
+    }
+
+    try {
+        if (typeof showScreen === 'function') showScreen('main-menu', false);
+    } catch(err) {}
 };
 
 window.handleBackToMenu = window.handleGlobalBackToMenu;
 window.handleBrandNewBackToMenu = window.handleGlobalBackToMenu;
 window.returnToMainMenu = window.handleGlobalBackToMenu;
+window.goBack = window.handleGlobalBackToMenu;
 
 function setupGlobalBackToMenuListener() {
     const btn = document.getElementById('global-back-menu-button');
