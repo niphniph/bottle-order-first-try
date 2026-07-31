@@ -1828,22 +1828,22 @@ function exitGameFromPause() {
     showScreen('classic-menu', false);
 }
 
-window.handleBrandNewBackToMenu = function(e) {
+window.handleBackToMenu = function(e) {
     if (e) {
         if (typeof e.preventDefault === 'function') e.preventDefault();
         if (typeof e.stopPropagation === 'function') e.stopPropagation();
     }
-    console.log("[BackToMenu] Brand new Back to Menu button clicked!");
+    console.log('BACK TO MENU CLICKED');
 
     try {
         if (typeof sound !== 'undefined' && typeof sound.playClick === 'function') {
             sound.playClick();
         }
     } catch(err) {
-        console.warn("[BackToMenu] Sound effect warning:", err);
+        console.warn('Sound effect warning:', err);
     }
 
-    // Stop all game timers and intervals
+    // Stop and clear all timers and intervals
     if (typeof timerInterval !== 'undefined' && timerInterval) {
         clearInterval(timerInterval);
         timerInterval = null;
@@ -1853,14 +1853,14 @@ window.handleBrandNewBackToMenu = function(e) {
         blindTimeout = null;
     }
 
-    // Reset gameplay state
+    // Reset game state
     if (typeof isPlaying !== 'undefined') isPlaying = false;
     if (typeof isPaused !== 'undefined') isPaused = false;
     if (typeof selectedBottle !== 'undefined') selectedBottle = null;
     if (typeof firstSelected !== 'undefined') firstSelected = null;
     if (typeof isDragging !== 'undefined') isDragging = false;
 
-    // Clean up DOM bottle states
+    // Reset bottle slots visual state
     try {
         document.querySelectorAll('.bottle-slot').forEach(el => {
             el.classList.remove('selected', 'dragging', 'hover-target', 'swapping', 'settling');
@@ -1874,24 +1874,12 @@ window.handleBrandNewBackToMenu = function(e) {
         if (modal) modal.classList.add('hidden');
     });
 
-    // Determine target mode-selection menu
-    const activeScreen = document.querySelector('.screen.active');
-    let targetScreen = 'main-menu';
-    if (activeScreen && activeScreen.id === 'game-screen') {
-        targetScreen = (typeof currentMode !== 'undefined' && (currentMode === 'sequence' || currentMode === 'time-attack' || currentMode === 'blind'))
-            ? 'classic-menu'
-            : 'main-menu';
-    } else if (activeScreen && activeScreen.id === 'classic-menu') {
-        targetScreen = 'main-menu';
-    }
-
-    console.log("[BackToMenu] Successfully navigating to screen:", targetScreen);
-    showScreen(targetScreen, false);
+    // Always navigate to the main mode-selection screen (containing Classic, Adventure, Daily, Multiplayer, Knockout)
+    showScreen('main-menu', false);
 };
 
-function returnToMainMenu() {
-    window.handleBrandNewBackToMenu();
-}
+window.handleBrandNewBackToMenu = window.handleBackToMenu;
+window.returnToMainMenu = window.handleBackToMenu;
 
 function updateActiveNavTab(screenId) {
     const navMapping = {
