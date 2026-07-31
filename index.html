@@ -1860,6 +1860,11 @@ body {
 </head>
 <body class="antialiased overflow-x-hidden min-h-screen flex flex-col items-center dark">
     
+    <!-- Single Reusable Global Back To Menu Button -->
+    <button type="button" id="global-back-menu-button" class="global-back-menu-button hidden" onclick="handleGlobalBackToMenu(event)">
+        ← BACK TO MENU
+    </button>
+    
     <!-- Top Navigation Bar -->
     <header id="app-header" class="fixed top-0 left-0 right-0 z-50 bg-surface/30 backdrop-blur-xl border-b-2 border-primary shadow-[0_4px_20px_0_rgba(189,0,255,0.4)]">
         <div class="flex justify-between items-center w-full px-margin-mobile py-unit max-w-[800px] mx-auto">
@@ -1932,7 +1937,7 @@ body {
 
     <!-- Classic Modes Menu Screen -->
     <div id="classic-menu" class="screen hidden classic-modes-screen">
-        <button type="button" onclick="handleBackToMenu(event)" class="brand-new-back-btn screen-top-left-back"><span class="arrow">←</span> BACK TO MENU</button>
+
         <div class="classic-modes-content custom-scrollbar">
             <div class="game-title">
                 <div class="title-bottle select-none">BOTTLE</div>
@@ -1965,12 +1970,8 @@ body {
 
     <!-- Game Screen -->
     <div id="game-screen" class="screen hidden flex-grow flex flex-col items-center justify-center w-full max-w-[900px] px-margin-mobile pt-10 pb-24 !h-auto">
-        <div class="w-full flex items-center justify-between mb-4 max-w-[800px] relative z-[99999]">
-            <button type="button" id="brand-new-back-btn" onclick="handleBackToMenu(event)" class="brand-new-back-btn">
-                <span class="arrow">←</span> BACK TO MENU
-            </button>
-            <h3 id="game-mode-title" class="font-headline-md text-2xl text-white text-center flex-1">Sequence Mode</h3>
-            <div class="w-[180px] hidden sm:block"></div>
+        <div class="w-full flex items-center justify-center mb-4 max-w-[800px]">
+            <h3 id="game-mode-title" class="font-headline-md text-2xl text-white text-center">Sequence Mode</h3>
         </div>
         
         <div class="game-wrapper">
@@ -2028,7 +2029,7 @@ body {
 
     <!-- Skins Selection Shop Screen -->
     <div id="skins-screen" class="screen hidden flex-grow flex flex-col items-center justify-start w-full max-w-[600px] px-margin-mobile pt-20 pb-36 space-y-8">
-        <button type="button" onclick="handleBackToMenu(event)" class="brand-new-back-btn screen-top-left-back"><span class="arrow">←</span> BACK TO MENU</button>
+
         <!-- Screen Title -->
         <div class="text-center mb-6">
             <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary tracking-widest uppercase drop-shadow-[0_0_10px_rgba(236,178,255,0.4)]">SELECT SKIN</h2>
@@ -2063,7 +2064,7 @@ body {
 
     <!-- Leaderboard Screen -->
     <div id="leaderboard-screen" class="screen hidden flex-grow flex flex-col items-center justify-start w-full max-w-[600px] px-margin-mobile pt-20 pb-36 space-y-6">
-        <button type="button" onclick="handleBackToMenu(event)" class="brand-new-back-btn screen-top-left-back"><span class="arrow">←</span> BACK TO MENU</button>
+
         <!-- Screen Title -->
         <div class="text-center mb-4">
             <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-secondary tracking-widest uppercase drop-shadow-[0_0_10px_rgba(0,240,255,0.4)]">ARCADE LEADERBOARD</h2>
@@ -2175,7 +2176,6 @@ body {
 
     <!-- Profile Screen -->
     <div id="profile-screen" class="screen hidden flex-grow flex flex-col items-center justify-start w-full max-w-[600px] px-margin-mobile pt-20 pb-36 space-y-6">
-        <button type="button" onclick="handleBackToMenu(event)" class="brand-new-back-btn screen-top-left-back"><span class="arrow">←</span> BACK TO MENU</button>
         <!-- Screen Title -->
         <div class="text-center mb-4">
             <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-tertiary tracking-widest uppercase drop-shadow-[0_0_10px_rgba(171,214,0,0.4)]">PLAYER PROFILE</h2>

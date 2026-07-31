@@ -1752,9 +1752,12 @@ function showScreen(screenId, pushToHistory = true) {
         } else if (screenId === 'main-menu') {
             appHeader.classList.add('hidden');
             appNav.classList.remove('hidden');
+    const globalBackBtn = document.getElementById('global-back-menu-button');
+    if (globalBackBtn) {
+        if (screenId === 'main-menu') {
+            globalBackBtn.classList.add('hidden');
         } else {
-            appHeader.classList.remove('hidden');
-            appNav.classList.remove('hidden');
+            globalBackBtn.classList.remove('hidden');
         }
     }
     
@@ -1828,12 +1831,12 @@ function exitGameFromPause() {
     showScreen('classic-menu', false);
 }
 
-window.handleBackToMenu = function(e) {
+window.handleGlobalBackToMenu = function(e) {
     if (e) {
         if (typeof e.preventDefault === 'function') e.preventDefault();
         if (typeof e.stopPropagation === 'function') e.stopPropagation();
     }
-    console.log('BACK TO MENU CLICKED');
+    console.log('GLOBAL BACK TO MENU CLICKED');
 
     try {
         if (typeof sound !== 'undefined' && typeof sound.playClick === 'function') {
@@ -1853,7 +1856,7 @@ window.handleBackToMenu = function(e) {
         blindTimeout = null;
     }
 
-    // Reset game state
+    // Reset gameplay state
     if (typeof isPlaying !== 'undefined') isPlaying = false;
     if (typeof isPaused !== 'undefined') isPaused = false;
     if (typeof selectedBottle !== 'undefined') selectedBottle = null;
@@ -1869,17 +1872,18 @@ window.handleBackToMenu = function(e) {
     } catch(err) {}
 
     // Hide active overlays and modals
-    ['pause-modal', 'game-over-modal', 'win-modal'].forEach(id => {
+    ['pause-modal', 'game-over-modal', 'win-modal', 'settings-modal', 'energy-modal'].forEach(id => {
         const modal = document.getElementById(id);
         if (modal) modal.classList.add('hidden');
     });
 
-    // Always navigate to the main mode-selection screen (containing Classic, Adventure, Daily, Multiplayer, Knockout)
+    // Always navigate directly to main-menu
     showScreen('main-menu', false);
 };
 
-window.handleBrandNewBackToMenu = window.handleBackToMenu;
-window.returnToMainMenu = window.handleBackToMenu;
+window.handleBackToMenu = window.handleGlobalBackToMenu;
+window.handleBrandNewBackToMenu = window.handleGlobalBackToMenu;
+window.returnToMainMenu = window.handleGlobalBackToMenu;
 
 function updateActiveNavTab(screenId) {
     const navMapping = {

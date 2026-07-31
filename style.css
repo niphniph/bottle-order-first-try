@@ -1521,82 +1521,71 @@ button.back-button,
 }
 
 /* ======================================================== */
-/* BRAND NEW BACK TO MENU BUTTON */
+/* REUSABLE GLOBAL BACK TO MENU BUTTON */
 /* ======================================================== */
-.brand-new-back-btn {
+.global-back-menu-button {
+  position: fixed !important;
+  top: max(16px, env(safe-area-inset-top)) !important;
+  left: max(16px, env(safe-area-inset-left)) !important;
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+  min-height: 48px !important;
+  padding: 10px 18px !important;
+  border: 3px solid #ffffff !important;
+  border-radius: 14px !important;
+  background: #2b0754 !important;
+  color: #ffffff !important;
+  font-family: 'Fredoka One', cursive, sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 15px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  cursor: pointer !important;
+  touch-action: manipulation !important;
+  box-shadow: 0 4px 0 #120024, 0 6px 14px rgba(0, 0, 0, 0.4) !important;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  user-select: none !important;
+  white-space: nowrap !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 8px !important;
-  padding: 10px 20px !important;
-  min-height: 48px !important;
-  min-width: 48px !important;
-  border-radius: 14px !important;
-  border: 3px solid #ffffff !important;
-  background: #231238 !important; /* Arcade dark-purple */
-  color: #ffffff !important;
-  font-family: 'Fredoka One', cursive, sans-serif !important;
-  font-size: 16px !important;
-  font-weight: 900 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.5px !important;
-  cursor: pointer !important;
-  box-shadow: 0 4px 0 #120024, 0 6px 14px rgba(0, 0, 0, 0.4) !important;
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  user-select: none !important;
-  pointer-events: auto !important;
-  white-space: nowrap !important;
-  position: relative !important;
-  z-index: 99999 !important;
 }
 
-.brand-new-back-btn:hover {
+.global-back-menu-button:hover {
   transform: translateY(-2px) scale(1.03) !important;
-  background: #2e184a !important;
+  background: #380a6b !important;
   box-shadow: 0 6px 0 #120024, 0 9px 18px rgba(0, 0, 0, 0.5) !important;
 }
 
-.brand-new-back-btn:active {
+.global-back-menu-button:active {
   transform: translateY(2px) scale(0.97) !important;
   box-shadow: 0 2px 0 #120024, 0 3px 6px rgba(0, 0, 0, 0.3) !important;
 }
 
-.brand-new-back-btn:focus-visible {
+.global-back-menu-button:focus-visible {
   outline: 3px solid #00e5ff !important;
   outline-offset: 3px !important;
 }
 
-.brand-new-back-btn .arrow {
-  font-size: 20px !important;
-  line-height: 1 !important;
+.global-back-menu-button.hidden {
+  display: none !important;
 }
 
-/* Screen top left back button positioning for menu screens */
-.screen-top-left-back {
-  position: absolute !important;
-  top: 85px !important;
-  left: 24px !important;
-}
-
-/* Ensure Level container sits cleanly inside phone frame without conflict */
+/* Level container position inside phone frame */
 .game-container .level-container {
   left: 20px !important;
   top: 20px !important;
 }
 
-/* Mobile responsive adjustments */
 @media (max-width: 640px) {
-  .brand-new-back-btn {
+  .global-back-menu-button {
     padding: 8px 14px !important;
     font-size: 13px !important;
-    min-height: 48px !important;
-  }
-  
-  .screen-top-left-back {
-    top: 75px !important;
-    left: 16px !important;
+    min-height: 44px !important;
   }
 }
+
 
 
 
