@@ -1914,7 +1914,7 @@ body {
 <body class="antialiased overflow-x-hidden min-h-screen flex flex-col items-center dark">
     
     <!-- Single Reusable Global Back To Menu Button -->
-    <button type="button" id="global-back-menu-button" class="global-back-menu-button hidden" onclick="handleGlobalBackToMenu(event)">
+    <button type="button" id="global-back-menu-button" class="global-back-menu-button hidden" onclick="window.handleGlobalBackToMenu ? window.handleGlobalBackToMenu(event) : showScreen('main-menu', false)">
         ← BACK TO MENU
     </button>
     

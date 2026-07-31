@@ -1874,9 +1874,12 @@ window.handleGlobalBackToMenu = function(e) {
     } catch(err) {}
 
     // Hide active overlays and modals
-    ['pause-modal', 'game-over-modal', 'win-modal', 'settings-modal', 'out-of-energy-modal', 'ad-overlay'].forEach(id => {
+    ['pause-modal', 'game-over-modal', 'win-modal', 'settings-modal', 'out-of-energy-modal', 'ad-overlay', 'coming-soon-modal', 'multiplayer-intermission-modal', 'multiplayer-results-modal'].forEach(id => {
         const modal = document.getElementById(id);
-        if (modal) modal.classList.add('hidden');
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+        }
     });
 
     // Always navigate directly to main-menu
@@ -1886,6 +1889,34 @@ window.handleGlobalBackToMenu = function(e) {
 window.handleBackToMenu = window.handleGlobalBackToMenu;
 window.handleBrandNewBackToMenu = window.handleGlobalBackToMenu;
 window.returnToMainMenu = window.handleGlobalBackToMenu;
+
+function setupGlobalBackToMenuListener() {
+    const btn = document.getElementById('global-back-menu-button');
+    if (!btn) return;
+    
+    let isHandling = false;
+    const handleEvent = (e) => {
+        if (isHandling) return;
+        isHandling = true;
+        setTimeout(() => { isHandling = false; }, 250);
+        if (e) {
+            if (typeof e.preventDefault === 'function') e.preventDefault();
+            if (typeof e.stopPropagation === 'function') e.stopPropagation();
+        }
+        window.handleGlobalBackToMenu(e);
+    };
+
+    btn.addEventListener('click', handleEvent, { capture: true });
+    btn.addEventListener('touchend', handleEvent, { capture: true });
+    btn.addEventListener('pointerup', handleEvent, { capture: true });
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupGlobalBackToMenuListener);
+} else {
+    setupGlobalBackToMenuListener();
+}
+window.addEventListener('load', setupGlobalBackToMenuListener);
 
 function updateActiveNavTab(screenId) {
     const navMapping = {
