@@ -1753,6 +1753,12 @@ function showScreen(screenId, pushToHistory = true) {
         } else if (screenId === 'main-menu') {
             appHeader.classList.add('hidden');
             appNav.classList.remove('hidden');
+        } else {
+            appHeader.classList.remove('hidden');
+            appNav.classList.remove('hidden');
+        }
+    }
+
     const globalBackBtn = document.getElementById('global-back-menu-button');
     if (globalBackBtn) {
         if (screenId === 'main-menu') {
