@@ -1763,8 +1763,15 @@ function showScreen(screenId, pushToHistory = true) {
     if (globalBackBtn) {
         if (screenId === 'main-menu') {
             globalBackBtn.classList.add('hidden');
+            globalBackBtn.style.display = 'none';
         } else {
             globalBackBtn.classList.remove('hidden');
+            globalBackBtn.style.display = 'inline-flex';
+            if (screenId === 'game-screen') {
+                globalBackBtn.classList.add('on-game-screen');
+            } else {
+                globalBackBtn.classList.remove('on-game-screen');
+            }
         }
     }
     
