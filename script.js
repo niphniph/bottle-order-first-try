@@ -1723,6 +1723,7 @@ let screenHistory = [];
 let isPaused = false;
 
 function showScreen(screenId, pushToHistory = true) {
+    console.log('CURRENT SCREEN:', screenId);
     sound.playClick();
     
     if (pushToHistory) {
@@ -1836,6 +1837,7 @@ window.handleGlobalBackToMenu = function(e) {
         if (typeof e.preventDefault === 'function') e.preventDefault();
         if (typeof e.stopPropagation === 'function') e.stopPropagation();
     }
+    console.log('BACK BUTTON CLICK DETECTED');
     console.log('GLOBAL BACK TO MENU CLICKED');
 
     try {
@@ -1872,7 +1874,7 @@ window.handleGlobalBackToMenu = function(e) {
     } catch(err) {}
 
     // Hide active overlays and modals
-    ['pause-modal', 'game-over-modal', 'win-modal', 'settings-modal', 'energy-modal'].forEach(id => {
+    ['pause-modal', 'game-over-modal', 'win-modal', 'settings-modal', 'out-of-energy-modal', 'ad-overlay'].forEach(id => {
         const modal = document.getElementById(id);
         if (modal) modal.classList.add('hidden');
     });

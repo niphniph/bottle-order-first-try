@@ -5065,24 +5065,6 @@ setTimeout(() => {
 
 
 
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const menuButtonsText = ["CLASSIC", "ADVENTURE", "DAILY", "MULTIPLAYER", "KNOCK-OUT"];
 
-      document.querySelectorAll("button").forEach((btn) => {
-        if (btn.id === "global-back-btn") return;
-        const text = btn.textContent.trim().toUpperCase();
-
-        if (menuButtonsText.includes(text)) {
-          btn.classList.add("forced-main-menu-button");
-        }
-
-        if (text === "BACK" || text === "← BACK" || text === "←") {
-          btn.classList.add("forced-back-button");
-          btn.textContent = "←";
-        }
-      });
-    });
-    </script>
 </body>
 </html>
