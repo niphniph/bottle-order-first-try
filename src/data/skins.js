@@ -96,12 +96,5 @@ export const bottleSkins = [
     src: 'skins/skin13.png',
     desc: 'An alien-tech artifact skin pulsing with deep space ultraviolet energy.',
     border: 'neon-border-primary'
-  },
-  {
-    id: 'skin14',
-    name: 'Aqua Bottle Skin',
-    src: 'skins/skin14.png',
-    desc: 'A playable pixel sprite skin with original cyan and blue colors.',
-    border: 'neon-border-secondary'
   }
 ];

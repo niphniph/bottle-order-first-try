@@ -846,8 +846,8 @@ function getMigratedSkin() {
     }
 
     // Automatically reset removed skins to default 'classic'
-    const removedSkins = [];
-    if (removedSkins.includes(id)) {
+    const removedSkins = ['skin14', 'aqua'];
+    if (removedSkins.includes(id) || id === 'skin14' || id === 'aqua') {
         id = 'classic';
         localStorage.setItem('selectedBottleSkin', JSON.stringify({ id: 'classic', src: 'classic' }));
     }
