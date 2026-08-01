@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=999">
+    <link rel="stylesheet" href="style.css?v=1001">
     <script id="tailwind-config">
       tailwind.config = {
         darkMode: "class",
@@ -3480,7 +3480,7 @@ localStorage.removeItem('bottleOrderSkin'); // Cleanup legacy key
 let SKINS_METADATA = {};
 
 // Dynamically import ES modules in non-module script
-import('./src/data/skins.js').then(module => {
+import('./src/data/skins.js?v=1001').then(module => {
     const bottleSkins = module.bottleSkins;
     bottleSkins.forEach(skin => {
         SKINS_METADATA[skin.id] = {
@@ -3497,7 +3497,7 @@ import('./src/data/skins.js').then(module => {
 });
 
 // Import component module dynamically for ES compliance
-import('./src/components/BottleImage.js').then(module => {
+import('./src/components/BottleImage.js?v=1001').then(module => {
     console.log("BottleImage component module loaded dynamically.");
 }).catch(err => {
     console.warn("Failed to load BottleImage component module dynamically:", err);
@@ -5403,6 +5403,6 @@ setTimeout(() => {
 
 
 
-    <script src="script.js?v=999"></script>
+    <script src="script.js?v=1001"></script>
 </body>
 </html>

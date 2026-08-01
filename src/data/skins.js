@@ -52,7 +52,7 @@ export const bottleSkins = [
     id: 'skin7',
     name: 'Ocean Coral',
     src: 'skins/skin7.png',
-    desc: 'A miniature aquatic ecosystem bottle containing coral, starfish, and swimming fish.',
+    desc: 'A miniature underwater ecosystem bottle containing coral, starfish, and swimming fish.',
     border: 'neon-border-secondary'
   },
   {

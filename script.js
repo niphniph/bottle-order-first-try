@@ -987,7 +987,7 @@ let SKINS_METADATA = {};
 let BottleSkin = null;
 
 // Dynamically import ES modules in non-module script
-import('./src/data/skins.js').then(module => {
+import('./src/data/skins.js?v=1001').then(module => {
     const bottleSkins = module.bottleSkins;
     bottleSkins.forEach(skin => {
         SKINS_METADATA[skin.id] = {
@@ -1003,7 +1003,7 @@ import('./src/data/skins.js').then(module => {
     updateStatsUI();
 });
 
-import('./src/components/BottleSkin.jsx').then(module => {
+import('./src/components/BottleSkin.jsx?v=1001').then(module => {
     BottleSkin = module.BottleSkin;
     if (isPlaying) {
         renderBoard();
